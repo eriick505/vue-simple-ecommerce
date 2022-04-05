@@ -14,13 +14,13 @@ const password = ref("");
       <BaseInputText v-model="email" required placeholder="Email" type="text">
         <template #icon>
           <IconEmail
-            class="absolute top-[50%] left-3 text-xl z-50 -translate-y-[50%] text-gray-300"
+            class="absolute top-[50%] right-3 text-xl z-50 -translate-y-[50%] text-gray-200"
           />
         </template>
       </BaseInputText>
     </div>
 
-    <div class="mb-4">
+    <div class="mb-5">
       <BaseInputText
         v-model="password"
         required
@@ -29,15 +29,15 @@ const password = ref("");
       >
         <template #icon>
           <IconPadlock
-            class="absolute top-[50%] left-3 text-xl z-50 -translate-y-[50%] text-gray-300"
+            class="absolute top-[50%] right-3 text-xl z-50 -translate-y-[50%] text-gray-200"
           />
         </template>
       </BaseInputText>
     </div>
 
-    <div class="text-center">
+    <div>
       <button
-        class="bg-blue-500 text-white px-16 py-3 rounded-full hover:bg-green-600 transition-all"
+        class="bg-blue-500 text-white px-16 py-3 rounded-full hover:bg-blue-800 transition-all"
       >
         SIGN IN
       </button>

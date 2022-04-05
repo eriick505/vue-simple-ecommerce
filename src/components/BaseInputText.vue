@@ -22,13 +22,21 @@ const onInputChange = (e: Event) => {
 <template>
   <div class="relative">
     <slot name="icon"></slot>
+
     <input
       :value="modelValue"
       @input="onInputChange"
       v-bind="attrs"
-      class="pt-4 pr-4 pb-4 pl-9 py-2 text-black border-none rounded-md w-full"
+      class="CustomBaseInputText"
     />
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="postcss">
+.CustomBaseInputText {
+  @apply pt-4 pr-9 pb-4 pl-4 py-2 bg-gray-800 text-white outline-1 
+  focus:outline-double outline-blue-500 focus:shadow-md 
+focus:shadow-blue-500/50 transition-all duration-500 border-none 
+  rounded-lg w-full;
+}
+</style>

@@ -19,3 +19,19 @@ http.interceptors.request.use((config) => {
 
   return config;
 });
+
+export const verifyHttpError = (error: unknown) => {
+  const isHttpError = axios.isAxiosError(error);
+
+  if (isHttpError) {
+    return {
+      isHttpError,
+      result: error,
+    };
+  }
+
+  return {
+    isHttpError,
+    result: error as Error,
+  };
+};

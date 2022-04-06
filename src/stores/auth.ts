@@ -44,6 +44,7 @@ export const useAuthStore = defineStore({
         if (!isAuthenticated) return;
 
         this.authenticated = true;
+        this.router.push("/");
       } catch (error) {
         const { isHttpError, result } = verifyHttpError(error);
 

@@ -8,6 +8,7 @@ import type {
   HttpErrorMessageResponse,
   AuthLoginRequest,
   AuthUser,
+  HttpErrorResponse,
 } from "@/types";
 
 interface InitialState {
@@ -76,8 +77,8 @@ export const useAuthStore = defineStore({
         const { isHttpError, result } = verifyHttpError(error);
 
         if (isHttpError) {
-          const errorData = result.response?.data as HttpErrorMessageResponse;
-          this.error = errorData.message;
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
           return false;
         }
 
@@ -85,6 +86,21 @@ export const useAuthStore = defineStore({
         return false;
       } finally {
         this.loading = false;
+      }
+    },
+
+    async autoLogin() {
+      try {
+        const isAuthenticated = await this.userInfo();
+
+        if (!isAuthenticated) throw new Error("Session Expired");
+
+        this.authenticated = true;
+
+        return Promise.resolve();
+      } catch (err) {
+        this.authenticated = false;
+        this.error = (err as Error).message;
       }
     },
   },

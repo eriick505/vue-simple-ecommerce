@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
+import { TOKEN_KEY } from "@/utils/localStorage";
+
 import HomeView from "@/views/HomeView.vue";
 import SignInView from "@/views/SignInView.vue";
 
@@ -34,7 +36,26 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore();
+
+  if (to.meta.login) {
+    const token = window.localStorage.getItem(TOKEN_KEY);
+
+    if (token) {
+      try {
+        await authStore.autoLogin();
+        return true;
+      } catch (err) {
+        return { name: "login" };
+      }
+    } else {
+      return { name: "login" };
+    }
+  }
+});
+
+router.beforeResolve((to) => {
   const authStore = useAuthStore();
 
   if (to.meta.login && !authStore.authenticated) return { name: "login" };

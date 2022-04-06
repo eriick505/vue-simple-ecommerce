@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import SignInForm from "./SignInForm.vue";
 </script>
 
@@ -8,6 +9,13 @@ import SignInForm from "./SignInForm.vue";
       <h2 class="text-4xl md:text-5xl font-bold text-white">
         Sign in to CRUD<span class="text-blue-500">.</span>
       </h2>
+
+      <nav class="my-5 flex gap-10">
+        <RouterLink to="/" class="hover:text-blue-500">Go To Home </RouterLink>
+        <RouterLink to="/about" class="hover:text-blue-500">
+          Go To About
+        </RouterLink>
+      </nav>
     </header>
     <div class="md:max-w-[40%]">
       <SignInForm />

@@ -1,26 +1,28 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed, ref } from "vue";
 
 import { useAuthStore } from "@/stores/auth";
 
 import BaseInputText from "@/components/BaseInputText.vue";
+import BaseButton from "@/components/BaseButton.vue";
 import IconEmail from "@/components/icons/IconEmail.vue";
 import IconPadlock from "@/components/icons/IconPadlock.vue";
 
 import type { AuthLoginRequest } from "@/types";
 
 const authStore = useAuthStore();
-const route = useRouter();
 
 const login = ref<AuthLoginRequest>({
   email: "",
   password: "",
 });
 
+const textButtonSubmit = computed(() =>
+  authStore.loading ? "CARREGANDO" : "SIGN IN"
+);
+
 const handleSubmit = async () => {
   await authStore.loginUser(login.value);
-  route.push("/");
 };
 </script>
 
@@ -57,14 +59,10 @@ const handleSubmit = async () => {
     </div>
 
     <div>
-      <button
-        class="bg-blue-500 text-white px-16 py-3 rounded-full hover:bg-blue-800 transition-all"
-      >
-        {{ authStore.loading ? "CARREGANDO" : "SIGN IN" }}
-      </button>
+      <BaseButton :text="textButtonSubmit" />
     </div>
 
-    <p class="text-red-600 text-xl">{{ authStore.error }}</p>
+    <p class="text-red-600 text-xl mt-4">{{ authStore.error }}</p>
   </form>
 </template>
 

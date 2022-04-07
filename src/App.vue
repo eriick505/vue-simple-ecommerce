@@ -5,7 +5,7 @@ import { RouterView } from "vue-router";
 <template>
   <main class="bg-gray-700 h-screen flex justify-center items-center">
     <div
-      class="bg-gray-900 max-w-[1000px] w-full h-[75vh] rounded-[16px] overflow-hidden shadow-2xl m-1 md:m-4"
+      class="bg-gray-900 max-w-[1000px] w-full md:h-[75vh] rounded-[16px] overflow-hidden shadow-2xl m-1 md:m-4 py-10 md:py-5 px-6 md:px-14"
     >
       <!-- <RouterView /> -->
       <RouterView v-slot="{ Component }">

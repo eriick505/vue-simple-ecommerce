@@ -47,7 +47,7 @@ router.beforeEach(async (to) => {
 
     if (token) {
       try {
-        await authStore.autoLogin();
+        await authStore.authAutoLogin();
         return true;
       } catch (err) {
         return { name: "login" };

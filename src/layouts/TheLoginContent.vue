@@ -16,7 +16,7 @@ const changeCTA =
 </script>
 
 <template>
-  <section class="h-full py-4 px-6 flex flex-col justify-center">
+  <section class="h-full flex flex-col justify-center">
     <header class="mb-5">
       <span class="block mb-4 text-blue-500 font-medium">START FOR FREE</span>
       <h2 class="text-4xl md:text-5xl font-bold text-white">

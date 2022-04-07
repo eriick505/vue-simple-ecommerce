@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { useAttrs, type InputHTMLAttributes } from "vue";
+import {
+  useAttrs,
+  type ComponentPublicInstance,
+  type InputHTMLAttributes,
+} from "vue";
 
 interface IBaseInputTextProps extends InputHTMLAttributes {
   modelValue: string;
+  icon: ComponentPublicInstance;
 }
 
 interface IBaseInputTextEmits {
@@ -21,7 +26,10 @@ const onInputChange = (e: Event) => {
 
 <template>
   <div class="relative">
-    <slot name="icon"></slot>
+    <component
+      :is="icon"
+      class="absolute top-[50%] right-3 text-xl z-50 -translate-y-[50%] text-gray-200"
+    />
 
     <input
       :value="modelValue"

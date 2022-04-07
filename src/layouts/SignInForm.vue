@@ -18,11 +18,11 @@ const login = ref<AuthLoginRequest>({
 });
 
 const textButtonSubmit = computed(() =>
-  authStore.loading ? "CARREGANDO" : "SIGN IN"
+  authStore.loading ? "LOADING..." : "SIGN IN"
 );
 
 const handleSubmit = async () => {
-  await authStore.loginUser(login.value);
+  await authStore.authLogin(login.value);
 };
 </script>
 
@@ -31,31 +31,21 @@ const handleSubmit = async () => {
     <div class="mb-4">
       <BaseInputText
         v-model="login.email"
+        :icon="IconEmail"
         required
         placeholder="Email"
         type="email"
-      >
-        <template #icon>
-          <IconEmail
-            class="absolute top-[50%] right-3 text-xl z-50 -translate-y-[50%] text-gray-200"
-          />
-        </template>
-      </BaseInputText>
+      />
     </div>
 
     <div class="mb-5">
       <BaseInputText
         v-model="login.password"
+        :icon="IconPadlock"
         required
         placeholder="Password"
         type="password"
-      >
-        <template #icon>
-          <IconPadlock
-            class="absolute top-[50%] right-3 text-xl z-50 -translate-y-[50%] text-gray-200"
-          />
-        </template>
-      </BaseInputText>
+      />
     </div>
 
     <div>

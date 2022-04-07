@@ -4,11 +4,7 @@ import SignInForm from "@/layouts/SignInForm.vue";
 </script>
 
 <template>
-  <TheLoginContent
-    title="Sign in to your account"
-    type="signin"
-    linkTakes="register"
-  >
+  <TheLoginContent title="Create a new account" type="signup" linkTakes="login">
     <template #form>
       <SignInForm />
     </template>

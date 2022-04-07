@@ -29,7 +29,7 @@ const changeCTA =
         </RouterLink>
       </p>
     </header>
-    <div class="md:max-w-[40%]">
+    <div class="md:max-w-[45%]">
       <slot name="form"></slot>
     </div>
   </section>

@@ -5,6 +5,7 @@ import { TOKEN_KEY } from "@/utils/localStorage";
 
 import HomeView from "@/views/HomeView.vue";
 import SignInView from "@/views/SignInView.vue";
+import SignUpViewVue from "@/views/SignUpView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +21,6 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
       meta: {
         login: true,
@@ -32,6 +30,11 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: SignInView,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: SignUpViewVue,
     },
   ],
 });

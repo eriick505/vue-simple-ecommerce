@@ -1,14 +1,14 @@
 import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
-import { AUTH_LOGIN, AUTH_USER_INFO } from "@/services/auth";
+import { AUTH_LOGIN, AUTH_REGISTER, AUTH_USER_INFO } from "@/services/auth";
 import { TOKEN_KEY } from "@/utils/localStorage";
 
 import type {
-  HttpErrorMessageResponse,
   AuthLoginRequest,
   AuthUser,
   HttpErrorResponse,
+  AuthRegisterRequest,
 } from "@/types";
 
 interface InitialState {
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore({
   getters: {},
 
   actions: {
-    async loginUser(body: AuthLoginRequest) {
+    async authLogin(body: AuthLoginRequest) {
       try {
         this.error = "";
         this.loading = true;
@@ -40,7 +40,7 @@ export const useAuthStore = defineStore({
 
         window.localStorage.setItem(TOKEN_KEY, data.token);
 
-        const isAuthenticated = await this.userInfo();
+        const isAuthenticated = await this.authGetUserInfo();
 
         if (!isAuthenticated) return;
 
@@ -50,8 +50,8 @@ export const useAuthStore = defineStore({
         const { isHttpError, result } = verifyHttpError(error);
 
         if (isHttpError) {
-          const errorData = result.response?.data as HttpErrorMessageResponse;
-          this.error = errorData.message;
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
           return;
         }
 
@@ -61,7 +61,7 @@ export const useAuthStore = defineStore({
       }
     },
 
-    async userInfo() {
+    async authGetUserInfo() {
       try {
         this.error = "";
         this.loading = true;
@@ -76,6 +76,8 @@ export const useAuthStore = defineStore({
       } catch (error) {
         const { isHttpError, result } = verifyHttpError(error);
 
+        window.localStorage.removeItem(TOKEN_KEY);
+
         if (isHttpError) {
           const errorData = result.response?.data as HttpErrorResponse;
           this.error = errorData.error;
@@ -89,9 +91,9 @@ export const useAuthStore = defineStore({
       }
     },
 
-    async autoLogin() {
+    async authAutoLogin() {
       try {
-        const isAuthenticated = await this.userInfo();
+        const isAuthenticated = await this.authGetUserInfo();
 
         if (!isAuthenticated) throw new Error("Session Expired");
 
@@ -101,6 +103,38 @@ export const useAuthStore = defineStore({
       } catch (err) {
         this.authenticated = false;
         this.error = (err as Error).message;
+      }
+    },
+
+    async authRegisterUser(body: AuthRegisterRequest) {
+      try {
+        this.error = "";
+        this.loading = true;
+
+        const { data, status } = await AUTH_REGISTER(body);
+
+        if (status !== 201) throw new Error("Fail to register");
+
+        window.localStorage.setItem(TOKEN_KEY, data.token);
+
+        const isAuthenticated = await this.authGetUserInfo();
+
+        if (!isAuthenticated) throw new Error("Session Expired");
+
+        this.authenticated = true;
+        this.router.push("/");
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.loading = false;
       }
     },
   },

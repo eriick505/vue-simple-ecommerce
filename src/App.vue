@@ -4,9 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <main class="bg-gray-700 h-screen flex justify-center items-center">
-    <div
-      class="bg-gray-900 max-w-[1000px] w-full md:h-[75vh] rounded-[16px] overflow-hidden shadow-2xl m-1 md:m-4 py-10 md:py-5 px-6 md:px-14"
-    >
+    <div class="hero_container">
       <!-- <RouterView /> -->
       <RouterView v-slot="{ Component }">
         <Transition
@@ -21,7 +19,20 @@ import { RouterView } from "vue-router";
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
+.hero_container {
+  @apply bg-gray-900 max-w-[1000px] w-full md:h-[80vh] rounded-[16px] overflow-hidden shadow-2xl m-1 md:m-4 py-10 md:py-5 px-6 md:px-14;
+
+  background: linear-gradient(
+      90deg,
+      #0f1626 25%,
+      rgb(17 24 39 / 77%) 65%,
+      rgb(17 24 39 / 67%) 97%
+    ),
+    url(https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&w=1000&q=80);
+  background-size: cover;
+}
+
 .animation {
   animation-delay: 0;
   animation-duration: 0.4s;

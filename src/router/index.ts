@@ -1,11 +1,15 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteLocationNormalized,
+} from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 import { TOKEN_KEY } from "@/utils/localStorage";
 
 import HomeView from "@/views/HomeView.vue";
 import SignInView from "@/views/SignInView.vue";
-import SignUpViewVue from "@/views/SignUpView.vue";
+import SignUpView from "@/views/SignUpView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,12 +38,14 @@ const router = createRouter({
     {
       path: "/register",
       name: "register",
-      component: SignUpViewVue,
+      component: SignUpView,
     },
   ],
 });
 
-router.beforeEach(async (to) => {
+const authenticateWhenContainsMetaLogin = async (
+  to: RouteLocationNormalized
+) => {
   const authStore = useAuthStore();
 
   if (to.meta.login) {
@@ -55,13 +61,18 @@ router.beforeEach(async (to) => {
     } else {
       return { name: "login" };
     }
+  } else {
+    window.localStorage.removeItem(TOKEN_KEY);
   }
-});
+};
 
-router.beforeResolve((to) => {
+const checkAuthentication = (to: RouteLocationNormalized) => {
   const authStore = useAuthStore();
 
   if (to.meta.login && !authStore.authenticated) return { name: "login" };
-});
+};
+
+router.beforeEach(authenticateWhenContainsMetaLogin);
+router.beforeResolve(checkAuthentication);
 
 export default router;

@@ -21,7 +21,7 @@ import { RouterView } from "vue-router";
 
 <style scoped lang="postcss">
 .hero_container {
-  @apply bg-gray-900 max-w-[1000px] w-full md:h-[80vh] rounded-[16px] overflow-hidden shadow-2xl m-1 md:m-4 py-10 md:py-5 px-6 md:px-14;
+  @apply bg-gray-900 max-w-[1000px] w-full md:h-[80vh] rounded-[16px] overflow-x-hidden overflow-y-scroll shadow-2xl m-1 md:m-4 py-10 md:py-5 px-6 md:px-14;
 
   background: linear-gradient(
       90deg,

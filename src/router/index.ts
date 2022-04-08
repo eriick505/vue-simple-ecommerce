@@ -54,6 +54,9 @@ const authenticateWhenContainsMetaLogin = async (
     if (token) {
       try {
         await authStore.authAutoLogin();
+
+        if (!authStore.authenticated) return { name: "login" };
+
         return true;
       } catch (err) {
         return { name: "login" };
@@ -66,13 +69,6 @@ const authenticateWhenContainsMetaLogin = async (
   }
 };
 
-const checkAuthentication = (to: RouteLocationNormalized) => {
-  const authStore = useAuthStore();
-
-  if (to.meta.login && !authStore.authenticated) return { name: "login" };
-};
-
 router.beforeEach(authenticateWhenContainsMetaLogin);
-router.beforeResolve(checkAuthentication);
 
 export default router;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
+import { useProductStore } from "@/stores/products";
 import { getServerImage } from "@/utils/getServerImage";
 import { formatterPrice } from "@/utils/formatterPriceBRL";
 
@@ -17,10 +18,19 @@ interface IProductListItemProps {
 
 const props = defineProps<IProductListItemProps>();
 
+const productStore = useProductStore();
+
 const isProductActionActive = ref(false);
+
+const isProductIsOnTheWishList = computed(() =>
+  productStore.isProductIsOnTheWishList(props.product.id_product)
+);
 
 const toggleProductActionActive = () =>
   (isProductActionActive.value = !isProductActionActive.value);
+
+const toggleProductToWishList = () =>
+  productStore.toggleProductToWishList(props.product.id_product);
 
 const productImage = getServerImage(props.product.image_product.path);
 const productPrice = formatterPrice(Number(props.product.price));
@@ -68,6 +78,10 @@ const productPrice = formatterPrice(Number(props.product.price));
       >
         <div class="h-full">
           <button
+            @click="toggleProductToWishList"
+            :class="{
+              'bg-rose-500 border-rose-500': isProductIsOnTheWishList,
+            }"
             class="flex items-center justify-center border-[1px] h-full w-full rounded-lg border-slate-600 active:bg-rose-500 active:border-rose-500"
           >
             <IconHeart class="text-lg text-slate-200" />

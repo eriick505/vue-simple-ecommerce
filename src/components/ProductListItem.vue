@@ -62,7 +62,6 @@ const productPrice = formatterPrice(Number(props.product.price));
     <section class="p-5">
       <header class="pb-2">
         <h2>{{ product.name }}</h2>
-        {{ isProductActionActive }}
       </header>
       <footer
         class="grid grid-cols-[44px_1fr] items-center pt-3 border-t-[1px] border-slate-800"

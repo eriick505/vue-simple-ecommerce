@@ -34,14 +34,14 @@ const productPrice = formatterPrice(Number(props.product.price));
       <img :src="productImage" :alt="product.name" />
       <button
         @click="toggleProductActionActive"
-        :class="{ 'rotate-0 bg-slate-500': isProductActionActive }"
-        class="flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full bg-slate-700 z-50 transition-all rotate-180"
+        :class="{ 'rotate-180 bg-slate-700': !isProductActionActive }"
+        class="flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full bg-slate-500 z-50 transition-all rotate-0"
       >
         <IconChevron />
       </button>
       <div
-        :class="{ 'translate-y-0': isProductActionActive }"
-        class="absolute w-full h-full top-0 left-0 flex justify-center items-center bg-gray-700/80 transition-all duration-300 -translate-y-full"
+        :class="{ '-translate-y-full': !isProductActionActive }"
+        class="absolute w-full h-full top-0 left-0 flex justify-center items-center bg-gray-700/80 transition-all duration-300 translate-y-0"
       >
         <div>
           <button

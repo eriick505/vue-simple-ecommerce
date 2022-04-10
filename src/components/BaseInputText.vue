@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import {
-  useAttrs,
-  type ComponentPublicInstance,
-  type InputHTMLAttributes,
-} from "vue";
+import { useAttrs, type Component, type InputHTMLAttributes } from "vue";
 
 interface IBaseInputTextProps extends InputHTMLAttributes {
   modelValue: string;
-  icon: ComponentPublicInstance;
+  icon: Component;
 }
 
 interface IBaseInputTextEmits {

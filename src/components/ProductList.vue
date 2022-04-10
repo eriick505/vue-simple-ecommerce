@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
+import { RouterLink } from "vue-router";
+
 import { useProductStore } from "@/stores/products";
 import ProductListItem from "@/components/ProductListItem.vue";
 
@@ -12,6 +14,9 @@ onMounted(() => {
 
 <template>
   <section>
+    <RouterLink to="/create-product" class="text-white text-2xl"
+      >ADICIONAR PRODUTO</RouterLink
+    >
     <h2 class="text-3xl text-white text-center font-bold mb-7">PRODUCT LIST</h2>
 
     <h2 class="text-3xl text-white" v-show="productStore.loading">

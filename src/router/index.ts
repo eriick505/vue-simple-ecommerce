@@ -10,6 +10,7 @@ import { TOKEN_KEY } from "@/utils/localStorage";
 import HomeView from "@/views/HomeView.vue";
 import SignInView from "@/views/SignInView.vue";
 import SignUpView from "@/views/SignUpView.vue";
+import TheModal from "@/layouts/TheModal.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,13 @@ const router = createRouter({
       meta: {
         login: true,
       },
+      children: [
+        {
+          path: ":create-product",
+          name: "createProduct",
+          component: TheModal,
+        },
+      ],
     },
     {
       path: "/about",
@@ -59,13 +67,12 @@ const authenticateWhenContainsMetaLogin = async (
 
         return true;
       } catch (err) {
+        window.localStorage.removeItem(TOKEN_KEY);
         return { name: "login" };
       }
     } else {
       return { name: "login" };
     }
-  } else {
-    window.localStorage.removeItem(TOKEN_KEY);
   }
 };
 

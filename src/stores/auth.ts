@@ -36,7 +36,9 @@ export const useAuthStore = defineStore({
         this.error = "";
         this.loading = true;
 
-        const { data } = await AUTH_LOGIN(body);
+        const { data, status } = await AUTH_LOGIN(body);
+
+        if (status !== 200) throw new Error("Fail to login");
 
         window.localStorage.setItem(TOKEN_KEY, data.token);
 
@@ -51,8 +53,10 @@ export const useAuthStore = defineStore({
 
         if (isHttpError) {
           const errorData = result.response?.data as HttpErrorResponse;
-          this.error = errorData.error;
-          return;
+
+          if (!errorData) return (this.error = (error as Error).message);
+
+          return (this.error = errorData.error);
         }
 
         this.error = result.message;
@@ -80,6 +84,12 @@ export const useAuthStore = defineStore({
 
         if (isHttpError) {
           const errorData = result.response?.data as HttpErrorResponse;
+
+          if (!errorData) {
+            this.error = (error as Error).message;
+            return false;
+          }
+
           this.error = errorData.error;
           return false;
         }
@@ -128,8 +138,10 @@ export const useAuthStore = defineStore({
 
         if (isHttpError) {
           const errorData = result.response?.data as HttpErrorResponse;
-          this.error = errorData.error;
-          return;
+
+          if (!errorData) return (this.error = (error as Error).message);
+
+          return (this.error = errorData.error);
         }
 
         this.error = result.message;

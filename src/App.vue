@@ -3,7 +3,7 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <main class="bg-gray-700 h-screen flex justify-center items-center">
+  <main class="bg-gray-700 md:h-screen flex justify-center items-center">
     <div class="hero_container">
       <!-- <RouterView /> -->
       <RouterView v-slot="{ Component }">
@@ -31,12 +31,6 @@ import { RouterView } from "vue-router";
     ),
     url(https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&w=1000&q=80);
   background-size: cover;
-}
-
-.animation {
-  animation-delay: 0;
-  animation-duration: 0.4s;
-  animation-fill-mode: both;
 }
 
 .animation_fadeInLeft {

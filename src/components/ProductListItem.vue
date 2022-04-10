@@ -44,25 +44,25 @@ const productPrice = formatterPrice(Number(props.product.price));
       <img :src="productImage" :alt="product.name" />
       <button
         @click="toggleProductActionActive"
-        :class="{ 'rotate-180 bg-slate-700': !isProductActionActive }"
-        class="flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full bg-slate-500 z-50 transition-all rotate-0"
+        :class="{ active: isProductActionActive }"
+        class="productActionDisplayToggleButton"
       >
         <IconChevron />
       </button>
       <div
-        :class="{ '-translate-y-full': !isProductActionActive }"
-        class="absolute w-full h-full top-0 left-0 flex justify-center items-center bg-gray-700/80 transition-all duration-300 translate-y-0"
+        :class="{ active: isProductActionActive }"
+        class="productActionWrapper"
       >
         <div>
           <button
-            class="buttonAction mr-3 bg-amber-500 shadow-lg shadow-amber-500/50 active:bg-amber-600"
+            class="actionButton mr-3 bg-amber-500 shadow-lg shadow-amber-500/50 active:bg-amber-600"
           >
             <IconEdit />
           </button>
         </div>
         <div>
           <button
-            class="buttonAction bg-rose-500 shadow-lg shadow-rose-500/50 active:bg-rose-600"
+            class="actionButton bg-rose-500 shadow-lg shadow-rose-500/50 active:bg-rose-600"
           >
             <IconDelete />
           </button>
@@ -101,7 +101,22 @@ const productPrice = formatterPrice(Number(props.product.price));
 </template>
 
 <style scoped lang="postcss">
-.buttonAction {
+.productActionDisplayToggleButton {
+  @apply flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full bg-slate-700 z-50 transition-all rotate-180;
+}
+.productActionDisplayToggleButton.active {
+  @apply rotate-0 bg-slate-500;
+}
+
+.productActionWrapper {
+  @apply absolute w-full h-full top-0 left-0 flex justify-center items-center bg-gray-700/80 transition-all duration-300 -translate-y-full;
+}
+
+.productActionWrapper.active {
+  @apply translate-y-0;
+}
+
+.actionButton {
   @apply flex justify-center items-center w-9 h-9 rounded-full transition-all duration-300 active:shadow-none;
 }
 </style>

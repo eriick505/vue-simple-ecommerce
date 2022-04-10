@@ -7,3 +7,9 @@
     font-family: "Carme", system-ui, sans-serif;
   }
 }
+
+.animation {
+  animation-delay: 0;
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+}

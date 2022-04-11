@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+
+import { useProductStore } from "@/stores/products";
 
 import TheModal from "@/layouts/TheModal.vue";
 
@@ -8,6 +10,12 @@ import BaseButton from "@/components/BaseButton.vue";
 import BaseInputSelect from "@/components/BaseInputSelect.vue";
 import IconEmail from "@/components/icons/IconEmail.vue";
 
+const productStore = useProductStore();
+
+onMounted(() => {
+  productStore.getCategoryList();
+});
+
 const productFields = ref({
   name: "",
   price: "",
@@ -15,16 +23,23 @@ const productFields = ref({
   product_image: "",
 });
 
-const optionList = [
-  {
-    id: 12093,
-    description: "some text",
-  },
-];
+const optionList = ref<{ id: string; description: string }[] | undefined>(
+  undefined
+);
 
 watch(productFields.value, () => {
   console.log(productFields.value, "productFieldsproductFields");
 });
+
+watch(
+  () => productStore.categoryList,
+  () => {
+    optionList.value = productStore.categoryList?.map((cat) => ({
+      id: cat.categoryId,
+      description: cat.name,
+    }));
+  }
+);
 
 const handleSubmit = () => {
   console.log("send product");
@@ -54,7 +69,7 @@ const handleSubmit = () => {
             type="text"
           />
         </div>
-        <div class="mb-4">
+        <div class="mb-4" v-show="!productStore.loading">
           <BaseInputSelect
             v-model="productFields.categoryId"
             :option-list="optionList"

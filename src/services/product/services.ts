@@ -1,5 +1,5 @@
 import { http, type HttpResponseData } from "@/services";
-import { SERVICE_GET_PRODUCT_LIST } from "@/services/products";
+import { SERVICE_GET_PRODUCT_LIST } from "@/services/product";
 
 import type { IProductList } from "@/types";
 

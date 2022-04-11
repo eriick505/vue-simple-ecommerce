@@ -4,16 +4,12 @@ import {
   SERVICE_CREATE_PRODUCT,
 } from "@/services/product";
 
-import type {
-  IProductList,
-  IProductCreateRequest,
-  IProductCreateResponse,
-} from "@/types";
+import type { IProductList, IProductCreateResponse } from "@/types";
 
 export const GET_PRODUCT_LIST = (): Promise<HttpResponseData<IProductList>> =>
   http.get(SERVICE_GET_PRODUCT_LIST());
 
 export const CREATE_PRODUCT = (
-  body: IProductCreateRequest
+  body: FormData
 ): Promise<HttpResponseData<IProductCreateResponse>> =>
   http.post(SERVICE_CREATE_PRODUCT(), body);

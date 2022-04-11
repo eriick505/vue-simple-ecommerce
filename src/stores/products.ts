@@ -6,12 +6,7 @@ import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
-import type {
-  HttpErrorResponse,
-  ICategory,
-  IProduct,
-  IProductCreateRequest,
-} from "@/types";
+import type { HttpErrorResponse, ICategory, IProduct } from "@/types";
 
 interface InitialState {
   isLoading: {
@@ -139,7 +134,7 @@ export const useProductStore = defineStore({
       }
     },
 
-    async postProductCreate(body: IProductCreateRequest) {
+    async postProductCreate(body: FormData) {
       try {
         this.error = "";
         this.isLoading.postProductCreate = true;

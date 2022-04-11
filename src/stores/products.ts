@@ -2,16 +2,19 @@ import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
 import { GET_PRODUCT_LIST } from "@/services/product";
+import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
-import type { HttpErrorResponse, IProduct } from "@/types";
+import type { HttpErrorResponse, ICategory, IProduct } from "@/types";
 
 interface InitialState {
   loading: boolean;
   error: string;
   productList?: IProduct[];
   productQuantity?: number;
+  categoryList?: ICategory[];
+  categoryQuantity?: number;
   wishList: string[];
 }
 
@@ -27,6 +30,8 @@ export const useProductStore = defineStore({
     error: "",
     productList: undefined,
     productQuantity: undefined,
+    categoryList: undefined,
+    categoryQuantity: undefined,
     wishList: wishListInitialState,
   }),
 
@@ -93,6 +98,32 @@ export const useProductStore = defineStore({
 
       if (productFound) return true;
       else return false;
+    },
+
+    async getCategoryList() {
+      try {
+        this.error = "";
+        this.loading = true;
+
+        const { data, status } = await GET_CATEGORY_LIST();
+
+        if (status !== 200) throw new Error("Fail to get category list");
+
+        this.categoryList = data.categories;
+        this.categoryQuantity = data.quantity;
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.loading = false;
+      }
     },
   },
 });

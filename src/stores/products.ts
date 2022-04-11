@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
-import { GET_PRODUCT_LIST } from "@/services/products";
+import { GET_PRODUCT_LIST } from "@/services/product";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 

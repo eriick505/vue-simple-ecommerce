@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 import { useProductStore } from "@/stores/products";
 
@@ -42,6 +42,12 @@ const optionList = ref<{ id: string; description: string }[] | undefined>(
   undefined
 );
 
+const successMessage = ref("");
+
+const textButtonSubmit = computed(() =>
+  productStore.isLoading.postProductCreate ? "CREATING..." : "CREATE PRODUCT"
+);
+
 watch(formFields.value, () => {
   console.log(formFields.value, "productFieldsproductFields");
 });
@@ -63,8 +69,21 @@ const onInputUploadChange = (file: File | undefined) => {
   }
 };
 
-const handleSubmit = () => {
-  console.log("send product");
+const handleSubmit = async () => {
+  const formData = new FormData();
+
+  if (!formFields.value.product_image.raw) return;
+
+  formData.append("name", formFields.value.name);
+  formData.append("price", formFields.value.price);
+  formData.append("categoryId", formFields.value.categoryId);
+  formData.append("product_image", formFields.value.product_image.raw);
+
+  const message = await productStore.postProductCreate(formData);
+
+  if (message) {
+    successMessage.value = message;
+  }
 };
 </script>
 
@@ -101,6 +120,7 @@ const handleSubmit = () => {
             <BaseInputSelect
               v-model="formFields.categoryId"
               :option-list="optionList"
+              required
             />
             <p v-if="productStore.isLoading.getCategoryList">Loading...</p>
           </div>
@@ -133,9 +153,13 @@ const handleSubmit = () => {
         </div>
 
         <div>
-          <BaseButton text="Create Product" />
+          <BaseButton :text="textButtonSubmit" />
         </div>
       </form>
+
+      <p v-if="successMessage" class="text-2x1 mt-3 text-green-600">
+        {{ successMessage }}
+      </p>
     </template>
   </TheModal>
 </template>

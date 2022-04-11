@@ -23,3 +23,14 @@ export interface IProductList {
   quantity: number;
   products: IProduct[];
 }
+
+export interface IProductCreateRequest {
+  name: string;
+  price: string;
+  categoryId: string;
+  product_image: File;
+}
+
+export interface IProductCreateResponse {
+  message: string;
+}

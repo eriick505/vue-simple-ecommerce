@@ -1,17 +1,23 @@
 import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
-import { GET_PRODUCT_LIST } from "@/services/product";
+import { CREATE_PRODUCT, GET_PRODUCT_LIST } from "@/services/product";
 import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
-import type { HttpErrorResponse, ICategory, IProduct } from "@/types";
+import type {
+  HttpErrorResponse,
+  ICategory,
+  IProduct,
+  IProductCreateRequest,
+} from "@/types";
 
 interface InitialState {
   isLoading: {
     getProductList: boolean;
     getCategoryList: boolean;
+    postProductCreate: boolean;
   };
   error: string;
   productList?: IProduct[];
@@ -32,6 +38,7 @@ export const useProductStore = defineStore({
     isLoading: {
       getProductList: false,
       getCategoryList: false,
+      postProductCreate: false,
     },
     error: "",
     productList: undefined,
@@ -129,6 +136,31 @@ export const useProductStore = defineStore({
         this.error = result.message;
       } finally {
         this.isLoading.getCategoryList = false;
+      }
+    },
+
+    async postProductCreate(body: IProductCreateRequest) {
+      try {
+        this.error = "";
+        this.isLoading.postProductCreate = true;
+
+        const { data, status } = await CREATE_PRODUCT(body);
+
+        if (status !== 201) throw new Error("Fail to create a new product");
+
+        return data.message;
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.isLoading.postProductCreate = false;
       }
     },
   },

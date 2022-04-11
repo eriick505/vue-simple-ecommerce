@@ -1,3 +1,5 @@
+import type { ICategory } from "@/types";
+
 export interface IProduct_Image {
   fieldname: string;
   originalname: string;
@@ -7,11 +9,6 @@ export interface IProduct_Image {
   filename: string;
   path: string;
   size: number;
-}
-
-export interface ICategory {
-  categoryId: string;
-  name: string;
 }
 
 export interface IProduct {

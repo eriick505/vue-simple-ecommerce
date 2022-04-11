@@ -33,7 +33,7 @@ const handleOutsideClick = (e: Event) => {
         leave-active-class="animation animate_fadeOutUp"
         mode="out-in"
       >
-        <div v-show="showModal" class="contentModalWrapper">
+        <div v-if="showModal" class="contentModalWrapper">
           <button @click="closeModal" class="closeModalButton">
             <IconClose />
           </button>

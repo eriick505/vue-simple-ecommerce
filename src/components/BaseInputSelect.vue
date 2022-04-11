@@ -4,6 +4,10 @@ import IconChevron from "./icons/IconChevron.vue";
 
 interface IBaseInputSelectProps extends SelectHTMLAttributes {
   modelValue: string;
+  optionList: {
+    id: string | number;
+    description: string;
+  }[];
 }
 
 interface IBaseInputSelectEmits {
@@ -40,16 +44,13 @@ const onSelectChange = (e: Event) => {
       class="p-4 w-full rounded-lg bg-gray-800 text-white appearance-none"
     >
       <option disabled value="">Please select one</option>
-      <option value="1">Category 2</option>
-      <option value="2">Category 2</option>
-      <option value="hfghf">Category 2</option>
-      <option value="asd">Category 2</option>
-      <option value="2">Category 2</option>
-      <option value="43">Category 2</option>
-      <option value="2">Category 2</option>
-      <option value="nbnb">Category 2</option>
-      <option value="sdfs">Category 2</option>
-      <option value="334">Category 2</option>
+      <option
+        v-for="optionItem in optionList"
+        :value="optionItem.id"
+        :key="optionItem.id"
+      >
+        {{ optionItem.description }}
+      </option>
     </select>
   </div>
 </template>

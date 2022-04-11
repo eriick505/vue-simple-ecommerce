@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import TheModal from "@/layouts/TheModal.vue";
 
@@ -13,6 +13,17 @@ const productFields = ref({
   price: "",
   categoryId: "",
   product_image: "",
+});
+
+const optionList = [
+  {
+    id: 12093,
+    description: "some text",
+  },
+];
+
+watch(productFields.value, () => {
+  console.log(productFields.value, "productFieldsproductFields");
 });
 
 const handleSubmit = () => {
@@ -44,7 +55,10 @@ const handleSubmit = () => {
           />
         </div>
         <div class="mb-4">
-          <BaseInputSelect />
+          <BaseInputSelect
+            v-model="productFields.categoryId"
+            :option-list="optionList"
+          />
         </div>
         <div class="mb-4">
           <BaseInputText

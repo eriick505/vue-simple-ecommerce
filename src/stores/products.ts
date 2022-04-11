@@ -9,7 +9,10 @@ import { WISHLIST_KEY } from "@/utils/localStorage";
 import type { HttpErrorResponse, ICategory, IProduct } from "@/types";
 
 interface InitialState {
-  loading: boolean;
+  isLoading: {
+    getProductList: boolean;
+    getCategoryList: boolean;
+  };
   error: string;
   productList?: IProduct[];
   productQuantity?: number;
@@ -26,7 +29,10 @@ export const useProductStore = defineStore({
   id: "products",
 
   state: (): InitialState => ({
-    loading: false,
+    isLoading: {
+      getProductList: false,
+      getCategoryList: false,
+    },
     error: "",
     productList: undefined,
     productQuantity: undefined,
@@ -41,7 +47,7 @@ export const useProductStore = defineStore({
     async getProductList() {
       try {
         this.error = "";
-        this.loading = true;
+        this.isLoading.getProductList = true;
 
         const { data, status } = await GET_PRODUCT_LIST();
 
@@ -60,7 +66,7 @@ export const useProductStore = defineStore({
 
         this.error = result.message;
       } finally {
-        this.loading = false;
+        this.isLoading.getProductList = false;
       }
     },
 
@@ -103,7 +109,7 @@ export const useProductStore = defineStore({
     async getCategoryList() {
       try {
         this.error = "";
-        this.loading = true;
+        this.isLoading.getCategoryList = true;
 
         const { data, status } = await GET_CATEGORY_LIST();
 
@@ -122,7 +128,7 @@ export const useProductStore = defineStore({
 
         this.error = result.message;
       } finally {
-        this.loading = false;
+        this.isLoading.getCategoryList = false;
       }
     },
   },

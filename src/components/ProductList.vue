@@ -14,9 +14,9 @@ onMounted(() => {
 
 <template>
   <section>
-    <RouterLink to="/create-product" class="text-white text-2xl"
-      >ADICIONAR PRODUTO</RouterLink
-    >
+    <RouterLink to="/create-product" class="text-white text-2xl">
+      ADICIONAR PRODUTO
+    </RouterLink>
     <h2 class="text-3xl text-white text-center font-bold mb-7">PRODUCT LIST</h2>
 
     <h2 class="text-3xl text-white" v-show="productStore.loading">

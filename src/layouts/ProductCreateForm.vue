@@ -8,7 +8,19 @@ import TheModal from "@/layouts/TheModal.vue";
 import BaseInputText from "@/components/BaseInputText.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseInputSelect from "@/components/BaseInputSelect.vue";
-import IconEmail from "@/components/icons/IconEmail.vue";
+import IconCurrency from "@/components/icons/IconCurrency.vue";
+import IconFolderInfo from "@/components/icons/IconFolderInfo.vue";
+import IconPicture from "@/components/icons/IconPicture.vue";
+
+interface IProductFields {
+  name: string;
+  price: string;
+  categoryId: string;
+  product_image: {
+    preview?: string;
+    raw?: File;
+  };
+}
 
 const productStore = useProductStore();
 
@@ -16,19 +28,22 @@ onMounted(() => {
   productStore.getCategoryList();
 });
 
-const productFields = ref({
+const formFields = ref<IProductFields>({
   name: "",
   price: "",
   categoryId: "",
-  product_image: "",
+  product_image: {
+    preview: undefined,
+    raw: undefined,
+  },
 });
 
 const optionList = ref<{ id: string; description: string }[] | undefined>(
   undefined
 );
 
-watch(productFields.value, () => {
-  console.log(productFields.value, "productFieldsproductFields");
+watch(formFields.value, () => {
+  console.log(formFields.value, "productFieldsproductFields");
 });
 
 watch(
@@ -41,6 +56,13 @@ watch(
   }
 );
 
+const onInputUploadChange = (file: File | undefined) => {
+  if (file) {
+    formFields.value.product_image.preview = window.URL.createObjectURL(file);
+    formFields.value.product_image.raw = file;
+  }
+};
+
 const handleSubmit = () => {
   console.log("send product");
 };
@@ -49,36 +71,45 @@ const handleSubmit = () => {
 <template>
   <TheModal>
     <template #modalContent>
-      <h2>Create Product</h2>
+      <h2 class="text-2xl font-bold mb-4">Create Product</h2>
       <form @submit.prevent="handleSubmit">
         <div class="mb-4">
           <BaseInputText
-            v-model="productFields.name"
-            :icon="IconEmail"
+            v-model="formFields.name"
+            :icon="IconFolderInfo"
             required
             placeholder="Product Name"
             type="text"
           />
         </div>
+
+        <div class="mb-0 md:mb-4 grid md:grid-cols-[180px_1fr] md:gap-2">
+          <div class="mb-4 md:mb-0">
+            <BaseInputText
+              v-model="formFields.price"
+              :icon="IconCurrency"
+              required
+              placeholder="Price"
+              type="text"
+            />
+          </div>
+
+          <div
+            v-if="!productStore.isLoading.getCategoryList"
+            class="mb-4 md:mb-0"
+          >
+            <BaseInputSelect
+              v-model="formFields.categoryId"
+              :option-list="optionList"
+            />
+            <p v-if="productStore.isLoading.getCategoryList">Loading...</p>
+          </div>
+        </div>
+
         <div class="mb-4">
           <BaseInputText
-            v-model="productFields.price"
-            :icon="IconEmail"
-            required
-            placeholder="Price"
-            type="text"
-          />
-        </div>
-        <div class="mb-4" v-show="!productStore.loading">
-          <BaseInputSelect
-            v-model="productFields.categoryId"
-            :option-list="optionList"
-          />
-        </div>
-        <div class="mb-4">
-          <BaseInputText
-            v-model="productFields.product_image"
-            :icon="IconEmail"
+            @update:fileValue="onInputUploadChange"
+            :icon="IconPicture"
             required
             placeholder="Product Image"
             type="file"
@@ -88,7 +119,17 @@ const handleSubmit = () => {
         <div
           class="w-full h-52 mb-4 flex justify-center items-center border-dotted border-4 border-blue-900"
         >
-          <span>Product Image</span>
+          <span
+            v-if="formFields.product_image.preview"
+            :style="{
+              backgroundImage: formFields.product_image.preview
+                ? `url('${formFields.product_image.preview}')`
+                : 'none',
+            }"
+            class="block w-full h-full bg-contain bg-no-repeat bg-center"
+          >
+          </span>
+          <span v-else>No product image selected</span>
         </div>
 
         <div>

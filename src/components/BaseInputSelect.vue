@@ -4,7 +4,7 @@ import IconChevron from "./icons/IconChevron.vue";
 
 interface IBaseInputSelectProps extends SelectHTMLAttributes {
   modelValue: string;
-  optionList: {
+  optionList?: {
     id: string | number;
     description: string;
   }[];

@@ -6,12 +6,13 @@ import {
 } from "vue";
 
 interface IBaseInputTextProps extends InputHTMLAttributes {
-  modelValue: string;
+  modelValue?: string;
   icon: ComponentPublicInstance;
 }
 
 interface IBaseInputTextEmits {
   (e: "update:modelValue", value: string): void;
+  (e: "update:fileValue", value: File | undefined): void;
 }
 
 defineProps<IBaseInputTextProps>();
@@ -19,6 +20,14 @@ const emits = defineEmits<IBaseInputTextEmits>();
 const attrs = useAttrs();
 
 const onInputChange = (e: Event) => {
+  if (attrs.type) {
+    if (typeof attrs.type === "string" && attrs.type === "file") {
+      const value = (e.target as HTMLInputElement).files?.[0];
+      emits("update:fileValue", value);
+      return;
+    }
+  }
+
   const value = (e.target as HTMLInputElement).value;
   emits("update:modelValue", value);
 };

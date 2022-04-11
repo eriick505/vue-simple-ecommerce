@@ -1,17 +1,24 @@
 import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
-import { GET_PRODUCT_LIST } from "@/services/products";
+import { CREATE_PRODUCT, GET_PRODUCT_LIST } from "@/services/product";
+import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
-import type { HttpErrorResponse, IProduct } from "@/types";
+import type { HttpErrorResponse, ICategory, IProduct } from "@/types";
 
 interface InitialState {
-  loading: boolean;
+  isLoading: {
+    getProductList: boolean;
+    getCategoryList: boolean;
+    postProductCreate: boolean;
+  };
   error: string;
   productList?: IProduct[];
   productQuantity?: number;
+  categoryList?: ICategory[];
+  categoryQuantity?: number;
   wishList: string[];
 }
 
@@ -23,10 +30,16 @@ export const useProductStore = defineStore({
   id: "products",
 
   state: (): InitialState => ({
-    loading: false,
+    isLoading: {
+      getProductList: false,
+      getCategoryList: false,
+      postProductCreate: false,
+    },
     error: "",
     productList: undefined,
     productQuantity: undefined,
+    categoryList: undefined,
+    categoryQuantity: undefined,
     wishList: wishListInitialState,
   }),
 
@@ -36,7 +49,7 @@ export const useProductStore = defineStore({
     async getProductList() {
       try {
         this.error = "";
-        this.loading = true;
+        this.isLoading.getProductList = true;
 
         const { data, status } = await GET_PRODUCT_LIST();
 
@@ -55,7 +68,7 @@ export const useProductStore = defineStore({
 
         this.error = result.message;
       } finally {
-        this.loading = false;
+        this.isLoading.getProductList = false;
       }
     },
 
@@ -93,6 +106,57 @@ export const useProductStore = defineStore({
 
       if (productFound) return true;
       else return false;
+    },
+
+    async getCategoryList() {
+      try {
+        this.error = "";
+        this.isLoading.getCategoryList = true;
+
+        const { data, status } = await GET_CATEGORY_LIST();
+
+        if (status !== 200) throw new Error("Fail to get category list");
+
+        this.categoryList = data.categories;
+        this.categoryQuantity = data.quantity;
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.isLoading.getCategoryList = false;
+      }
+    },
+
+    async postProductCreate(body: FormData) {
+      try {
+        this.error = "";
+        this.isLoading.postProductCreate = true;
+
+        const { data, status } = await CREATE_PRODUCT(body);
+
+        if (status !== 201) throw new Error("Fail to create a new product");
+
+        return data.message;
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.isLoading.postProductCreate = false;
+      }
     },
   },
 });

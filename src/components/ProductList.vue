@@ -14,16 +14,22 @@ onMounted(() => {
 
 <template>
   <section>
-    <RouterLink to="/create-product" class="text-white text-2xl"
-      >ADICIONAR PRODUTO</RouterLink
-    >
+    <RouterLink to="/create-product" class="text-white text-2xl">
+      ADICIONAR PRODUTO
+    </RouterLink>
     <h2 class="text-3xl text-white text-center font-bold mb-7">PRODUCT LIST</h2>
 
-    <h2 class="text-3xl text-white" v-show="productStore.loading">
+    <h2
+      v-if="productStore.isLoading.getProductList"
+      class="text-3xl text-white"
+    >
       Loading...
     </h2>
 
-    <ul class="grid md:grid-cols-3 gap-4" v-show="!productStore.loading">
+    <ul
+      v-if="!productStore.isLoading.getProductList"
+      class="grid md:grid-cols-3 gap-4"
+    >
       <li v-for="product in productStore.productList" :key="product.id_product">
         <ProductListItem :product="product" />
       </li>

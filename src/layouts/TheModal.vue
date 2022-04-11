@@ -33,7 +33,7 @@ const handleOutsideClick = (e: Event) => {
         leave-active-class="animation animate_fadeOutUp"
         mode="out-in"
       >
-        <div v-show="showModal" class="contentModalWrapper">
+        <div v-if="showModal" class="contentModalWrapper">
           <button @click="closeModal" class="closeModalButton">
             <IconClose />
           </button>
@@ -41,80 +41,7 @@ const handleOutsideClick = (e: Event) => {
           <div
             class="mt-6 md:mt-0 overflow-y-auto max-h-[90vh] md:max-h-[80vh]"
           >
-            <div class="">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Excepturi voluptate fugiat libero in doloremque repellat illo
-                quo sit impedit, quas laborum inventore nihil consectetur
-                numquam obcaecati quae sequi provident doloribus totam quisquam?
-                Rerum eos nemo architecto quisquam repellendus quibusdam iure,
-                aut aliquid omnis possimus ad minus reiciendis magnam,
-                laudantium ratione?
-              </p>
-            </div>
+            <slot name="modalContent"></slot>
           </div>
         </div>
       </Transition>

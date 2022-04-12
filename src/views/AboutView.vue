@@ -3,23 +3,20 @@ import { RouterLink } from "vue-router";
 </script>
 
 <template>
-  <div class="about">
-    <nav class="my-5 flex gap-10">
-      <RouterLink to="/" class="hover:text-blue-500">Go To Home </RouterLink>
-      <RouterLink to="/about" class="hover:text-blue-500">
-        Go To About
+  <div class="container mx-auto py-5 text-white">
+    <nav>
+      <RouterLink to="/" class="hover:text-blue-500 text-rose-500">
+        Go To Home
       </RouterLink>
     </nav>
-    <h1>This is an about page</h1>
+    <h2 class="mt-5">This is an about page...</h2>
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, eum sequi
+      atque magnam quasi expedita error aspernatur temporibus minus aliquid
+      officia voluptatibus itaque voluptas ratione? Quis suscipit ut quam
+      doloribus labore iste consequatur vero obcaecati recusandae hic, sapiente
+      illum. Voluptatibus ipsum vel officia? Natus, porro eius deserunt ducimus
+      velit commodi.
+    </p>
   </div>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

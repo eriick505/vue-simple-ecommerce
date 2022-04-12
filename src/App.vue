@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import TheHeader from "./layouts/TheHeader.vue";
 </script>
 
 <template>
+  <TheHeader />
   <main class="bg-gray-700 md:h-screen flex justify-center items-center">
     <div class="hero_container">
       <!-- <RouterView /> -->

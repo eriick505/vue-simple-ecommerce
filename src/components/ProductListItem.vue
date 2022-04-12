@@ -71,7 +71,7 @@ const productPrice = formatterPrice(Number(props.product.price));
     </header>
     <section class="p-5">
       <header class="pb-2">
-        <h2>{{ product.name }}</h2>
+        <h2 class="text-white">{{ product.name }}</h2>
       </header>
       <footer
         class="grid grid-cols-[44px_1fr] items-center pt-3 border-t-[1px] border-slate-800"
@@ -79,10 +79,8 @@ const productPrice = formatterPrice(Number(props.product.price));
         <div class="h-full">
           <button
             @click="toggleProductToWishList"
-            :class="{
-              'bg-rose-500 border-rose-500': isProductIsOnTheWishList,
-            }"
-            class="flex items-center justify-center border-[1px] h-full w-full rounded-lg border-slate-600 active:bg-rose-500 active:border-rose-500"
+            :class="{ active: isProductIsOnTheWishList }"
+            class="toggleToWishlistButton"
           >
             <IconHeart class="text-lg text-slate-200" />
           </button>
@@ -102,7 +100,7 @@ const productPrice = formatterPrice(Number(props.product.price));
 
 <style scoped lang="postcss">
 .productActionDisplayToggleButton {
-  @apply flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full bg-slate-700 z-50 transition-all rotate-180;
+  @apply flex justify-center items-center absolute top-2 right-2 w-6 h-6 rounded-full text-white bg-slate-700 z-50 transition-all rotate-180;
 }
 .productActionDisplayToggleButton.active {
   @apply rotate-0 bg-slate-500;
@@ -117,6 +115,14 @@ const productPrice = formatterPrice(Number(props.product.price));
 }
 
 .actionButton {
-  @apply flex justify-center items-center w-9 h-9 rounded-full transition-all duration-300 active:shadow-none;
+  @apply flex justify-center items-center w-9 h-9 rounded-full text-white transition-all duration-300 active:shadow-none;
+}
+
+.toggleToWishlistButton {
+  @apply flex items-center justify-center border-[1px] h-full w-full rounded-lg border-slate-600 active:bg-rose-500 active:border-rose-500;
+}
+
+.toggleToWishlistButton.active {
+  @apply bg-rose-500 border-rose-500;
 }
 </style>

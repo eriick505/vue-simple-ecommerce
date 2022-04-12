@@ -2,13 +2,16 @@
 import { computed, ref } from "vue";
 
 import { useProductStore } from "@/stores/products";
+
+import { setToastDisplay, setToastMessage } from "@/hooks/useToast";
+
 import { getServerImage } from "@/utils/getServerImage";
 import { formatterPrice } from "@/utils/formatterPriceBRL";
 
-import IconHeart from "./icons/IconHeart.vue";
-import IconChevron from "./icons/IconChevron.vue";
-import IconEdit from "./icons/IconEdit.vue";
-import IconDelete from "./icons/IconDelete.vue";
+import IconHeart from "@/components/icons/IconHeart.vue";
+import IconChevron from "@/components/icons/IconChevron.vue";
+import IconEdit from "@/components/icons/IconEdit.vue";
+import IconDelete from "@/components/icons/IconDelete.vue";
 
 import type { IProduct } from "@/types";
 
@@ -25,6 +28,23 @@ const isProductActionActive = ref(false);
 const isProductIsOnTheWishList = computed(() =>
   productStore.isProductIsOnTheWishList(props.product.id_product)
 );
+
+const deleteProduct = async (product_id: string) => {
+  const data = await productStore.deleteProduct(product_id);
+
+  if (data) {
+    const isConfirm = window.confirm(
+      "Do you really want to delete this product?"
+    );
+
+    if (isConfirm) {
+      setToastDisplay(true);
+      setToastMessage(data.message);
+
+      productStore.removeProdutoFromList(product_id);
+    }
+  }
+};
 
 const toggleProductActionActive = () =>
   (isProductActionActive.value = !isProductActionActive.value);
@@ -62,6 +82,7 @@ const productPrice = formatterPrice(Number(props.product.price));
         </div>
         <div>
           <button
+            @click="deleteProduct(props.product.id_product)"
             class="actionButton bg-rose-500 shadow-lg shadow-rose-500/50 active:bg-rose-600"
           >
             <IconDelete />

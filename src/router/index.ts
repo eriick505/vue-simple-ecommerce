@@ -3,6 +3,7 @@ import {
   createWebHistory,
   type RouteLocationNormalized,
 } from "vue-router";
+
 import { useAuthStore } from "@/stores/auth";
 
 import { TOKEN_KEY } from "@/utils/localStorage";
@@ -24,7 +25,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: ":create-product",
+          path: "create-product",
           name: "createProduct",
           component: ProductCreateView,
         },

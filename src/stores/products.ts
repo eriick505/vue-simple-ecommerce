@@ -194,12 +194,13 @@ export const useProductStore = defineStore({
       }
     },
 
-    removeProdutoFromList(productId: string) {
+    removeProductFromList(productId: string) {
       const productIndexFound = this.productList?.findIndex(
         (product) => product.id_product === productId
       );
 
-      if (productIndexFound && productIndexFound !== -1) {
+      if (productIndexFound !== undefined && productIndexFound !== -1) {
+        console.log("some productIndexFound");
         this.productList?.splice(productIndexFound, 1);
       }
     },

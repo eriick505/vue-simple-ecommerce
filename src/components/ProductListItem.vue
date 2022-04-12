@@ -41,7 +41,7 @@ const deleteProduct = async (product_id: string) => {
       setToastDisplay(true);
       setToastMessage(data.message);
 
-      productStore.removeProdutoFromList(product_id);
+      productStore.removeProductFromList(product_id);
     }
   }
 };

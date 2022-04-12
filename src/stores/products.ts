@@ -1,7 +1,11 @@
 import { defineStore } from "pinia";
 
 import { verifyHttpError } from "@/services";
-import { CREATE_PRODUCT, GET_PRODUCT_LIST } from "@/services/product";
+import {
+  CREATE_PRODUCT,
+  DELETE_PRODUCT,
+  GET_PRODUCT_LIST,
+} from "@/services/product";
 import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
@@ -13,6 +17,7 @@ interface InitialState {
     getProductList: boolean;
     getCategoryList: boolean;
     postProductCreate: boolean;
+    deleteProduct: boolean;
   };
   error: string;
   productList?: IProduct[];
@@ -34,6 +39,7 @@ export const useProductStore = defineStore({
       getProductList: false,
       getCategoryList: false,
       postProductCreate: false,
+      deleteProduct: false,
     },
     error: "",
     productList: undefined,
@@ -43,7 +49,11 @@ export const useProductStore = defineStore({
     wishList: wishListInitialState,
   }),
 
-  getters: {},
+  getters: {
+    getterProductList(state) {
+      return state.productList;
+    },
+  },
 
   actions: {
     async getProductList() {
@@ -156,6 +166,41 @@ export const useProductStore = defineStore({
         this.error = result.message;
       } finally {
         this.isLoading.postProductCreate = false;
+      }
+    },
+
+    async deleteProduct(productId: string) {
+      try {
+        this.error = "";
+        this.isLoading.deleteProduct = true;
+
+        const { data, status } = await DELETE_PRODUCT(productId);
+
+        if (status !== 202) throw new Error("Fail to delete product");
+
+        return data;
+      } catch (error) {
+        const { isHttpError, result } = verifyHttpError(error);
+
+        if (isHttpError) {
+          const errorData = result.response?.data as HttpErrorResponse;
+          this.error = errorData.error;
+          return;
+        }
+
+        this.error = result.message;
+      } finally {
+        this.isLoading.deleteProduct = false;
+      }
+    },
+
+    removeProdutoFromList(productId: string) {
+      const productIndexFound = this.productList?.findIndex(
+        (product) => product.id_product === productId
+      );
+
+      if (productIndexFound && productIndexFound !== -1) {
+        this.productList?.splice(productIndexFound, 1);
       }
     },
   },

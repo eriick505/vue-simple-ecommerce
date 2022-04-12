@@ -27,3 +27,8 @@ export interface IProductList {
 export interface IProductCreateResponse {
   message: string;
 }
+
+export interface IProductDeleteResponse {
+  message: string;
+  product: Omit<IProduct, "price" | "image_product" | "category">;
+}

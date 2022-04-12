@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
-import TheHeader from "./layouts/TheHeader.vue";
+
+import { isShowToast } from "@/hooks/useToast";
+
+import TheHeader from "@/layouts/TheHeader.vue";
+import TheToast from "@/components/TheToast.vue";
 </script>
 
 <template>
@@ -16,6 +20,8 @@ import TheHeader from "./layouts/TheHeader.vue";
       </Transition>
     </RouterView>
   </main>
+
+  <TheToast v-if="isShowToast" />
 </template>
 
 <style scoped>

@@ -50,9 +50,8 @@ export const useProductStore = defineStore({
   }),
 
   getters: {
-    getterProductList(state) {
-      return state.productList;
-    },
+    getterProductList: (state) => state.productList,
+    getterWishListQuantity: (state) => state.wishList.length,
   },
 
   actions: {

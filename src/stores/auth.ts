@@ -149,5 +149,13 @@ export const useAuthStore = defineStore({
         this.loading = false;
       }
     },
+
+    logout() {
+      this.user = undefined;
+      this.authenticated = false;
+      this.router.push("/login");
+
+      window.localStorage.removeItem(TOKEN_KEY);
+    },
   },
 });

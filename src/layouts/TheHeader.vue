@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 
+import { useAuthStore } from "@/stores/auth";
 import { useProductStore } from "@/stores/products";
 
 import IconUserCircle from "@/components/icons/IconUserCircle.vue";
 import IconHeart from "@/components/icons/IconHeart.vue";
 import IconCart from "@/components/icons/IconCart.vue";
 
+const authStore = useAuthStore();
 const productStore = useProductStore();
 
 const getterWishListQuantity = () => productStore.getterWishListQuantity;
+
+const logout = () => authStore.logout();
 </script>
 
 <template>
@@ -44,8 +48,18 @@ const getterWishListQuantity = () => productStore.getterWishListQuantity;
 
       <div>
         <ul class="flex justify-center items-center">
-          <li class="mr-8 text-2xl text-white hover:text-blue-500">
+          <li
+            @click="logout"
+            class="mr-8 text-2xl text-white relative cursor-pointer transition-all duration-500 group hover:text-blue-500"
+            role="button"
+          >
             <IconUserCircle />
+
+            <span
+              class="absolute -bottom-[115%] left-2/4 -translate-x-2/4 text-xs flex px-2 py-1 rounded-md text-center bg-blue-500 text-white transition-all duration-500 opacity-0 group-hover:opacity-100"
+            >
+              Logout?
+            </span>
           </li>
           <li class="mr-8 text-2xl relative text-white">
             <IconHeart />

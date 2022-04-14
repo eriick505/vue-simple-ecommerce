@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 
+import { useProductStore } from "@/stores/products";
+
 import IconUserCircle from "@/components/icons/IconUserCircle.vue";
 import IconHeart from "@/components/icons/IconHeart.vue";
 import IconCart from "@/components/icons/IconCart.vue";
+
+const productStore = useProductStore();
+
+const getterWishListQuantity = () => productStore.getterWishListQuantity;
 </script>
 
 <template>
@@ -41,8 +47,14 @@ import IconCart from "@/components/icons/IconCart.vue";
           <li class="mr-8 text-2xl text-white hover:text-blue-500">
             <IconUserCircle />
           </li>
-          <li class="mr-8 text-2xl text-white hover:text-rose-500">
+          <li class="mr-8 text-2xl relative text-white">
             <IconHeart />
+
+            <span
+              class="absolute -top-1 -right-2 rounded-full w-4 h-4 text-center flex justify-center items-center bg-rose-500 text-[10px] text-white"
+            >
+              {{ getterWishListQuantity() }}
+            </span>
           </li>
           <li class="text-2xl text-white hover:text-green-500">
             <IconCart />

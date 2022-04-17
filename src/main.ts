@@ -1,6 +1,8 @@
 import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 
+import { store, key } from "@/stores";
+
 import App from "./App.vue";
 import router from "./router";
 import "./index.css";
@@ -13,6 +15,7 @@ pinia.use(({ store }) => {
 });
 
 app.use(pinia);
+app.use(store, key);
 app.use(router);
 
 app.mount("#app");

@@ -4,7 +4,7 @@ import {
   type RouteLocationNormalized,
 } from "vue-router";
 
-import { useAuthStore } from "@/stores/auth";
+import { store } from "@/stores";
 
 import { TOKEN_KEY } from "@/utils/localStorage";
 
@@ -55,16 +55,14 @@ const router = createRouter({
 const authenticateWhenContainsMetaLogin = async (
   to: RouteLocationNormalized
 ) => {
-  const authStore = useAuthStore();
-
   if (to.meta.login) {
     const token = window.localStorage.getItem(TOKEN_KEY);
 
     if (token) {
       try {
-        await authStore.authAutoLogin();
+        await store.dispatch("auth/authAutoLogin");
 
-        if (!authStore.authenticated) return { name: "login" };
+        if (!store.state.auth.authenticated) return { name: "login" };
 
         return true;
       } catch (err) {

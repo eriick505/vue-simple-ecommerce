@@ -1,45 +1,48 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
 
-import { useProductStore } from "@/stores/products";
+import { useStore } from "@/stores";
+import { PRODUCT_GET_LIST_ACTION } from "@/stores/product";
+
 import ProductListItem from "@/components/ProductListItem.vue";
 
-const productStore = useProductStore();
+const store = useStore();
 
 const haveProducts = computed(() => {
-  if (productStore.productQuantity) return productStore.productQuantity > 0;
+  if (store.state.product.productQuantity)
+    return store.state.product.productQuantity > 0;
   else return false;
 });
 
 onMounted(() => {
-  productStore.getProductList();
+  store.dispatch(PRODUCT_GET_LIST_ACTION);
 });
 </script>
 
 <template>
   <div>
     <h2
-      v-if="productStore.isLoading.getProductList"
+      v-if="store.state.product.isLoading.getProductList"
       class="text-3xl text-white"
     >
       Loading...
     </h2>
 
     <span
-      v-if="!haveProducts && !productStore.isLoading.getProductList"
+      v-if="!haveProducts && !store.state.product.isLoading.getProductList"
       class="text-2xl text-white"
     >
       No products registered
     </span>
 
     <TransitionGroup
-      v-if="haveProducts && !productStore.isLoading.getProductList"
+      v-if="haveProducts && !store.state.product.isLoading.getProductList"
       tag="ul"
       name="fade"
       class="relative p-0 grid md:grid-cols-3 gap-6"
     >
       <li
-        v-for="product in productStore.getterProductList"
+        v-for="product in store.state.product.productList"
         :key="product.id_product"
       >
         <ProductListItem :product="product" />

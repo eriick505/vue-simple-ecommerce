@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-// import { useAuthStore } from "@/stores/auth";
+import { useStore } from "@/stores";
+import { AUTH_REGISTER_ACTION } from "@/stores/auth";
 
 import BaseInputText from "@/components/BaseInputText.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -12,7 +13,7 @@ import IconPadlock from "@/components/icons/IconPadlock.vue";
 
 import type { AuthRegisterRequest } from "@/types";
 
-// const authStore = useAuthStore();
+const store = useStore();
 
 const register = ref<AuthRegisterRequest>({
   name: "",
@@ -21,13 +22,12 @@ const register = ref<AuthRegisterRequest>({
   password: "",
 });
 
-// const textButtonSubmit = computed(() =>
-//   authStore.loading ? "LOADING..." : "SIGN UP"
-// );
-const textButtonSubmit = "SIGN UP";
+const textButtonSubmit = computed(() =>
+  store.state.auth.loading ? "LOADING..." : "SIGN UP"
+);
 
 const handleSubmit = async () => {
-  // await authStore.authRegisterUser(register.value);
+  await store.dispatch(AUTH_REGISTER_ACTION, register.value);
 };
 </script>
 
@@ -77,7 +77,7 @@ const handleSubmit = async () => {
       <BaseButton :text="textButtonSubmit" />
     </div>
 
-    <!-- <p class="text-red-600 text-xl mt-4">{{ authStore.error }}</p> -->
+    <p class="text-red-600 text-xl mt-4">{{ store.state.auth.error }}</p>
   </form>
 </template>
 

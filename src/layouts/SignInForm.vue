@@ -2,8 +2,7 @@
 import { computed, ref } from "vue";
 
 import { useStore } from "@/stores";
-
-// import { useAuthStore } from "@/stores/auth";
+import { AUTH_LOGIN_ACTION } from "@/stores/auth";
 
 import BaseInputText from "@/components/BaseInputText.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -19,14 +18,12 @@ const login = ref<AuthLoginRequest>({
   password: "",
 });
 
-// const textButtonSubmit = computed(() =>
-//   store.state.authModule.loading ? "LOADING..." : "SIGN IN"
-// );
-
-const textButtonSubmit = "SIGN IN";
+const textButtonSubmit = computed(() =>
+  store.state.auth.loading ? "LOADING..." : "SIGN IN"
+);
 
 const handleSubmit = async () => {
-  await store.dispatch("auth/authLogin", login.value);
+  await store.dispatch(AUTH_LOGIN_ACTION, login.value);
 };
 </script>
 
@@ -56,7 +53,7 @@ const handleSubmit = async () => {
       <BaseButton :text="textButtonSubmit" />
     </div>
 
-    <!-- <p class="text-red-600 text-xl mt-4">{{ authStore.error }}</p> -->
+    <p class="text-red-600 text-xl mt-4">{{ store.state.auth.error }}</p>
   </form>
 </template>
 

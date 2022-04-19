@@ -15,7 +15,7 @@ const haveProducts = computed(() => {
 });
 
 onMounted(() => {
-  store.dispatch(PRODUCT_GET_LIST_ACTION);
+  store.dispatch("getProductList");
 });
 </script>
 

@@ -2,6 +2,7 @@ import { WISHLIST_KEY } from "@/utils/localStorage";
 
 import { actions } from "./actions";
 import { mutations } from "./mutations";
+import { getters } from "./getters";
 
 import type { Module } from "vuex";
 import type { RootState } from "@/stores/types";
@@ -11,8 +12,6 @@ const wishListInitialState: string[] = JSON.parse(
 );
 
 export const productModule: Module<RootState["product"], RootState> = {
-  namespaced: true,
-
   state: () => ({
     isLoading: {
       getProductList: false,
@@ -31,4 +30,6 @@ export const productModule: Module<RootState["product"], RootState> = {
   mutations,
 
   actions,
+
+  getters,
 };

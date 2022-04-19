@@ -1,63 +1,54 @@
-import {
-  LOADING_GETPRODUCT_MUTATION,
-  ERROR_MUTATION,
-  PRODUCTLIST_MUTATION,
-  PRODUCTQUANTITY_MUTATION,
-  ADD_TO_WISHLIST_MUTATION,
-  WISHLIST_MUTATION,
-  LOADING_GETCATEGORY_MUTATION,
-  CATEGORYLIST_MUTATION,
-  CATEGORYQUANTITY_MUTATION,
-  LOADING_PRODUCTDELETE_MUTATION,
-  REMOVE_FROM_PRODUCTLIST,
-} from "./mutation-types";
-
 import type { MutationTree } from "vuex";
 import type { RootState } from "@/stores/types";
-import type { ICategory, IProduct } from "@/types";
 
-export const mutations: MutationTree<RootState["product"]> = {
-  [LOADING_GETPRODUCT_MUTATION]: (state, loading: boolean) => {
+import { MutationTypes, type Mutations } from "./mutation-types";
+
+export const mutations: MutationTree<RootState["product"]> & Mutations = {
+  [MutationTypes.LOADING_GETPRODUCT]: (state, loading) => {
     state.isLoading.getProductList = loading;
   },
 
-  [ERROR_MUTATION]: (state, message: string) => {
+  [MutationTypes.ERROR]: (state, message) => {
     state.error = message;
   },
 
-  [PRODUCTLIST_MUTATION]: (state, productList: IProduct[]) => {
+  [MutationTypes.PRODUCT_LIST]: (state, productList) => {
     state.productList = productList;
   },
 
-  [PRODUCTQUANTITY_MUTATION]: (state, quantity: number) => {
+  [MutationTypes.PRODUCT_QUANTITY]: (state, quantity) => {
     state.productQuantity = quantity;
   },
 
-  [ADD_TO_WISHLIST_MUTATION]: (state, productId: string) => {
+  [MutationTypes.ADD_TO_WISHLIST]: (state, productId) => {
     state.wishList.push(productId);
   },
 
-  [WISHLIST_MUTATION]: (state, list: string[]) => {
+  [MutationTypes.WISHLIST]: (state, list) => {
     state.wishList = list;
   },
 
-  [LOADING_GETCATEGORY_MUTATION]: (state, loading: boolean) => {
+  [MutationTypes.LOADING_GETCATEGORY]: (state, loading) => {
     state.isLoading.getCategoryList = loading;
   },
 
-  [CATEGORYLIST_MUTATION]: (state, list: ICategory[]) => {
+  [MutationTypes.LOADING_PRODUCTCREATE]: (state, loading) => {
+    state.isLoading.getProductList = loading;
+  },
+
+  [MutationTypes.CATEGORY_LIST]: (state, list) => {
     state.categoryList = list;
   },
 
-  [CATEGORYQUANTITY_MUTATION]: (state, quantity: number) => {
+  [MutationTypes.CATEGORY_QUANTITY]: (state, quantity) => {
     state.categoryQuantity = quantity;
   },
 
-  [LOADING_PRODUCTDELETE_MUTATION]: (state, loading: boolean) => {
+  [MutationTypes.LOADING_PRODUCTDELETE]: (state, loading) => {
     state.isLoading.deleteProduct = loading;
   },
 
-  [REMOVE_FROM_PRODUCTLIST]: (state, productIndex: number) => {
+  [MutationTypes.REMOVE_FROM_PRODUCTLIST]: (state, productIndex) => {
     state.productList?.splice(productIndex, 1);
   },
 };

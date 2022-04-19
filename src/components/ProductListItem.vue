@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { useProductStore } from "@/stores/products";
+import { useStore } from "@/stores";
 
 import { setToastDisplay, setToastMessage } from "@/hooks/useToast";
 
@@ -14,6 +14,11 @@ import IconEdit from "@/components/icons/IconEdit.vue";
 import IconDelete from "@/components/icons/IconDelete.vue";
 
 import type { IProduct } from "@/types";
+import {
+  PRODUCT_DELETE_ACTION,
+  PRODUCT_REMOVE_PRODUCT_ACTION,
+  PRODUCT_TOGGLE_PRODUCT_TO_WISHLIST_ACTION,
+} from "@/stores/product";
 
 interface IProductListItemProps {
   product: IProduct;
@@ -21,16 +26,22 @@ interface IProductListItemProps {
 
 const props = defineProps<IProductListItemProps>();
 
-const productStore = useProductStore();
+const store = useStore();
 
 const isProductActionActive = ref(false);
 
-const isProductIsOnTheWishList = computed(() =>
-  productStore.isProductIsOnTheWishList(props.product.id_product)
+console.log(
+  "store.getters",
+  store.getters.isProductIsOnTheWishList(props.product.id_product)
 );
 
+// const isProductIsOnTheWishList = computed(() =>
+//   store.getters.isProductIsOnTheWishList(props.product.id_product)
+// );
+const isProductIsOnTheWishList = false;
+
 const deleteProduct = async (product_id: string) => {
-  const data = await productStore.deleteProduct(product_id);
+  const data = await store.dispatch(PRODUCT_DELETE_ACTION, product_id);
 
   if (data) {
     const isConfirm = window.confirm(
@@ -41,7 +52,7 @@ const deleteProduct = async (product_id: string) => {
       setToastDisplay(true);
       setToastMessage(data.message);
 
-      productStore.removeProductFromList(product_id);
+      store.dispatch(PRODUCT_REMOVE_PRODUCT_ACTION, product_id);
     }
   }
 };
@@ -50,7 +61,10 @@ const toggleProductActionActive = () =>
   (isProductActionActive.value = !isProductActionActive.value);
 
 const toggleProductToWishList = () =>
-  productStore.toggleProductToWishList(props.product.id_product);
+  store.dispatch(
+    PRODUCT_TOGGLE_PRODUCT_TO_WISHLIST_ACTION,
+    props.product.id_product
+  );
 
 const productImage = getServerImage(props.product.image_product.path);
 const productPrice = formatterPrice(Number(props.product.price));

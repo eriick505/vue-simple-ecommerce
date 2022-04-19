@@ -14,11 +14,6 @@ import IconEdit from "@/components/icons/IconEdit.vue";
 import IconDelete from "@/components/icons/IconDelete.vue";
 
 import type { IProduct } from "@/types";
-import {
-  PRODUCT_DELETE_ACTION,
-  PRODUCT_REMOVE_PRODUCT_ACTION,
-  PRODUCT_TOGGLE_PRODUCT_TO_WISHLIST_ACTION,
-} from "@/stores/product";
 
 interface IProductListItemProps {
   product: IProduct;
@@ -30,18 +25,12 @@ const store = useStore();
 
 const isProductActionActive = ref(false);
 
-console.log(
-  "store.getters",
+const isProductIsOnTheWishList = computed(() =>
   store.getters.isProductIsOnTheWishList(props.product.id_product)
 );
 
-// const isProductIsOnTheWishList = computed(() =>
-//   store.getters.isProductIsOnTheWishList(props.product.id_product)
-// );
-const isProductIsOnTheWishList = false;
-
 const deleteProduct = async (product_id: string) => {
-  const data = await store.dispatch(PRODUCT_DELETE_ACTION, product_id);
+  const data = await store.dispatch("deleteProduct", product_id);
 
   if (data) {
     const isConfirm = window.confirm(
@@ -52,7 +41,7 @@ const deleteProduct = async (product_id: string) => {
       setToastDisplay(true);
       setToastMessage(data.message);
 
-      store.dispatch(PRODUCT_REMOVE_PRODUCT_ACTION, product_id);
+      store.dispatch("removeProductFromList", product_id);
     }
   }
 };
@@ -61,10 +50,7 @@ const toggleProductActionActive = () =>
   (isProductActionActive.value = !isProductActionActive.value);
 
 const toggleProductToWishList = () =>
-  store.dispatch(
-    PRODUCT_TOGGLE_PRODUCT_TO_WISHLIST_ACTION,
-    props.product.id_product
-  );
+  store.dispatch("toggleProductToWishList", props.product.id_product);
 
 const productImage = getServerImage(props.product.image_product.path);
 const productPrice = formatterPrice(Number(props.product.price));

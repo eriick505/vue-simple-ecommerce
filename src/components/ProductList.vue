@@ -2,7 +2,6 @@
 import { computed, onMounted } from "vue";
 
 import { useStore } from "@/stores";
-import { PRODUCT_GET_LIST_ACTION } from "@/stores/product";
 
 import ProductListItem from "@/components/ProductListItem.vue";
 
@@ -15,7 +14,7 @@ const haveProducts = computed(() => {
 });
 
 onMounted(() => {
-  store.dispatch("getProductList");
+  store.dispatch("getProductList", undefined);
 });
 </script>
 

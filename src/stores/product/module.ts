@@ -1,8 +1,8 @@
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
+import { getters } from "./getters";
 import { actions } from "./actions";
 import { mutations } from "./mutations";
-import { getters } from "./getters";
 
 import type { Module } from "vuex";
 import type { RootState } from "@/stores/types";

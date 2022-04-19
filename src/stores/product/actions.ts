@@ -9,7 +9,7 @@ import { GET_CATEGORY_LIST } from "@/services/category";
 
 import { WISHLIST_KEY } from "@/utils/localStorage";
 
-import { MutationTypes } from "./mutation-types";
+import { ProductMutationTypes } from "./mutation-types";
 
 import type { Actions } from "./action-types";
 import type { ActionTree } from "vuex";
@@ -19,27 +19,27 @@ import type { RootState } from "@/stores/types";
 export const actions: ActionTree<RootState["product"], RootState> & Actions = {
   async getProductList({ commit }) {
     try {
-      commit(MutationTypes.LOADING_GETPRODUCT, true);
-      commit(MutationTypes.ERROR, "");
+      commit(ProductMutationTypes.LOADING_GETPRODUCT, true);
+      commit(ProductMutationTypes.ERROR, "");
 
       const { data, status } = await GET_PRODUCT_LIST();
 
       if (status !== 200) throw new Error("Fail to get product list");
 
-      commit(MutationTypes.PRODUCT_LIST, data.products);
-      commit(MutationTypes.PRODUCT_QUANTITY, data.quantity);
+      commit(ProductMutationTypes.PRODUCT_LIST, data.products);
+      commit(ProductMutationTypes.PRODUCT_QUANTITY, data.quantity);
     } catch (error) {
       const { isHttpError, result } = verifyHttpError(error);
 
       if (isHttpError) {
         const errorData = result.response?.data as HttpErrorResponse;
 
-        return commit(MutationTypes.ERROR, errorData.error);
+        return commit(ProductMutationTypes.ERROR, errorData.error);
       }
 
-      commit(MutationTypes.ERROR, result.message);
+      commit(ProductMutationTypes.ERROR, result.message);
     } finally {
-      commit(MutationTypes.LOADING_GETPRODUCT, false);
+      commit(ProductMutationTypes.LOADING_GETPRODUCT, false);
     }
   },
 
@@ -56,7 +56,7 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
   },
 
   addProductToWishList({ commit, state }, productId: string) {
-    commit(MutationTypes.ADD_TO_WISHLIST, productId);
+    commit(ProductMutationTypes.ADD_TO_WISHLIST, productId);
 
     window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(state.wishList));
   },
@@ -66,7 +66,7 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
       (productDesiredId) => productDesiredId !== productId
     );
 
-    commit(MutationTypes.WISHLIST, wishListWithoutIdParam);
+    commit(ProductMutationTypes.WISHLIST, wishListWithoutIdParam);
 
     window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(state.wishList));
   },
@@ -82,33 +82,33 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
 
   async getCategoryList({ commit }) {
     try {
-      commit(MutationTypes.LOADING_GETCATEGORY, true);
-      commit(MutationTypes.ERROR, "");
+      commit(ProductMutationTypes.LOADING_GETCATEGORY, true);
+      commit(ProductMutationTypes.ERROR, "");
 
       const { data, status } = await GET_CATEGORY_LIST();
 
       if (status !== 200) throw new Error("Fail to get category list");
 
-      commit(MutationTypes.CATEGORY_LIST, data.categories);
-      commit(MutationTypes.CATEGORY_QUANTITY, data.quantity);
+      commit(ProductMutationTypes.CATEGORY_LIST, data.categories);
+      commit(ProductMutationTypes.CATEGORY_QUANTITY, data.quantity);
     } catch (error) {
       const { isHttpError, result } = verifyHttpError(error);
 
       if (isHttpError) {
         const errorData = result.response?.data as HttpErrorResponse;
-        return commit(MutationTypes.ERROR, errorData.error);
+        return commit(ProductMutationTypes.ERROR, errorData.error);
       }
 
-      commit(MutationTypes.ERROR, result.message);
+      commit(ProductMutationTypes.ERROR, result.message);
     } finally {
-      commit(MutationTypes.LOADING_GETCATEGORY, false);
+      commit(ProductMutationTypes.LOADING_GETCATEGORY, false);
     }
   },
 
   async postProductCreate({ commit }, body: FormData) {
     try {
-      commit(MutationTypes.ERROR, "");
-      commit(MutationTypes.LOADING_PRODUCTCREATE, true);
+      commit(ProductMutationTypes.ERROR, "");
+      commit(ProductMutationTypes.LOADING_PRODUCTCREATE, true);
 
       const { data, status } = await CREATE_PRODUCT(body);
 
@@ -120,19 +120,19 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
 
       if (isHttpError) {
         const errorData = result.response?.data as HttpErrorResponse;
-        return commit(MutationTypes.ERROR, errorData.error);
+        return commit(ProductMutationTypes.ERROR, errorData.error);
       }
 
-      commit(MutationTypes.ERROR, result.message);
+      commit(ProductMutationTypes.ERROR, result.message);
     } finally {
-      commit(MutationTypes.LOADING_PRODUCTCREATE, false);
+      commit(ProductMutationTypes.LOADING_PRODUCTCREATE, false);
     }
   },
 
   async deleteProduct({ commit }, productId: string) {
     try {
-      commit(MutationTypes.ERROR, "");
-      commit(MutationTypes.LOADING_PRODUCTDELETE, true);
+      commit(ProductMutationTypes.ERROR, "");
+      commit(ProductMutationTypes.LOADING_PRODUCTDELETE, true);
 
       const { data, status } = await DELETE_PRODUCT(productId);
 
@@ -144,12 +144,12 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
 
       if (isHttpError) {
         const errorData = result.response?.data as HttpErrorResponse;
-        return commit(MutationTypes.ERROR, errorData.error);
+        return commit(ProductMutationTypes.ERROR, errorData.error);
       }
 
-      commit(MutationTypes.ERROR, result.message);
+      commit(ProductMutationTypes.ERROR, result.message);
     } finally {
-      commit(MutationTypes.LOADING_PRODUCTDELETE, false);
+      commit(ProductMutationTypes.LOADING_PRODUCTDELETE, false);
     }
   },
 
@@ -159,7 +159,7 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
     );
 
     if (productIndexFound !== undefined && productIndexFound !== -1) {
-      commit(MutationTypes.REMOVE_FROM_PRODUCTLIST, productIndexFound);
+      commit(ProductMutationTypes.REMOVE_FROM_PRODUCTLIST, productIndexFound);
     }
   },
 };

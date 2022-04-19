@@ -6,7 +6,6 @@ export type Getters = {
   isProductIsOnTheWishList: (
     state: RootState["product"]
   ) => (v: string) => boolean;
-  getError(state: RootState["product"]): string;
 };
 
 export const getters: GetterTree<RootState["product"], RootState> & Getters = {
@@ -17,9 +16,5 @@ export const getters: GetterTree<RootState["product"], RootState> & Getters = {
 
     if (productFound) return true;
     else return false;
-  },
-
-  getError: (state) => {
-    return state.error;
   },
 };

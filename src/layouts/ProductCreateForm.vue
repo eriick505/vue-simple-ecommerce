@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 
-import { useProductStore } from "@/stores/products";
+import { useStore } from "@/stores";
 
 import TheModal from "@/layouts/TheModal.vue";
 
@@ -22,10 +22,10 @@ interface IProductFields {
   };
 }
 
-const productStore = useProductStore();
+const store = useStore();
 
 onMounted(() => {
-  productStore.getCategoryList();
+  store.dispatch("getCategoryList", undefined);
 });
 
 const formFields = ref<IProductFields>({
@@ -45,17 +45,15 @@ const optionList = ref<{ id: string; description: string }[] | undefined>(
 const successMessage = ref("");
 
 const textButtonSubmit = computed(() =>
-  productStore.isLoading.postProductCreate ? "CREATING..." : "CREATE PRODUCT"
+  store.state.product.isLoading.postProductCreate
+    ? "CREATING..."
+    : "CREATE PRODUCT"
 );
 
-watch(formFields.value, () => {
-  console.log(formFields.value, "productFieldsproductFields");
-});
-
 watch(
-  () => productStore.categoryList,
+  () => store.state.product.categoryList,
   () => {
-    optionList.value = productStore.categoryList?.map((cat) => ({
+    optionList.value = store.state.product.categoryList?.map((cat) => ({
       id: cat.categoryId,
       description: cat.name,
     }));
@@ -79,7 +77,7 @@ const handleSubmit = async () => {
   formData.append("categoryId", formFields.value.categoryId);
   formData.append("product_image", formFields.value.product_image.raw);
 
-  const message = await productStore.postProductCreate(formData);
+  const message = await store.dispatch("postProductCreate", formData);
 
   if (message) {
     successMessage.value = message;
@@ -114,7 +112,7 @@ const handleSubmit = async () => {
           </div>
 
           <div
-            v-if="!productStore.isLoading.getCategoryList"
+            v-if="!store.state.product.isLoading.getCategoryList"
             class="mb-4 md:mb-0"
           >
             <BaseInputSelect
@@ -122,7 +120,9 @@ const handleSubmit = async () => {
               :option-list="optionList"
               required
             />
-            <p v-if="productStore.isLoading.getCategoryList">Loading...</p>
+            <p v-if="store.state.product.isLoading.getCategoryList">
+              Loading...
+            </p>
           </div>
         </div>
 

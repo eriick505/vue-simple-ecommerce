@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { useProductStore } from "@/stores/products";
+import { useStore } from "@/stores";
 
 import { setToastDisplay, setToastMessage } from "@/hooks/useToast";
 
@@ -21,16 +21,16 @@ interface IProductListItemProps {
 
 const props = defineProps<IProductListItemProps>();
 
-const productStore = useProductStore();
+const store = useStore();
 
 const isProductActionActive = ref(false);
 
 const isProductIsOnTheWishList = computed(() =>
-  productStore.isProductIsOnTheWishList(props.product.id_product)
+  store.getters.isProductIsOnTheWishList(props.product.id_product)
 );
 
 const deleteProduct = async (product_id: string) => {
-  const data = await productStore.deleteProduct(product_id);
+  const data = await store.dispatch("deleteProduct", product_id);
 
   if (data) {
     const isConfirm = window.confirm(
@@ -41,7 +41,7 @@ const deleteProduct = async (product_id: string) => {
       setToastDisplay(true);
       setToastMessage(data.message);
 
-      productStore.removeProductFromList(product_id);
+      store.dispatch("removeProductFromList", product_id);
     }
   }
 };
@@ -50,7 +50,7 @@ const toggleProductActionActive = () =>
   (isProductActionActive.value = !isProductActionActive.value);
 
 const toggleProductToWishList = () =>
-  productStore.toggleProductToWishList(props.product.id_product);
+  store.dispatch("toggleProductToWishList", props.product.id_product);
 
 const productImage = getServerImage(props.product.image_product.path);
 const productPrice = formatterPrice(Number(props.product.price));

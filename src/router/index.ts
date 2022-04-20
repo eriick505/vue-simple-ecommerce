@@ -1,12 +1,5 @@
-import {
-  createRouter,
-  createWebHistory,
-  type RouteLocationNormalized,
-} from "vue-router";
-
-import { useAuthStore } from "@/stores/auth";
-
-import { TOKEN_KEY } from "@/utils/localStorage";
+import { createRouter, createWebHistory } from "vue-router";
+import { authenticateWhenContainsMetaLogin } from "@/router/authenticateWhenContainsMetaLogin";
 
 import HomeView from "@/views/HomeView.vue";
 import SignInView from "@/views/SignInView.vue";
@@ -51,31 +44,6 @@ const router = createRouter({
     },
   ],
 });
-
-const authenticateWhenContainsMetaLogin = async (
-  to: RouteLocationNormalized
-) => {
-  const authStore = useAuthStore();
-
-  if (to.meta.login) {
-    const token = window.localStorage.getItem(TOKEN_KEY);
-
-    if (token) {
-      try {
-        await authStore.authAutoLogin();
-
-        if (!authStore.authenticated) return { name: "login" };
-
-        return true;
-      } catch (err) {
-        window.localStorage.removeItem(TOKEN_KEY);
-        return { name: "login" };
-      }
-    } else {
-      return { name: "login" };
-    }
-  }
-};
 
 router.beforeEach(authenticateWhenContainsMetaLogin);
 

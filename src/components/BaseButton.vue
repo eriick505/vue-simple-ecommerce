@@ -13,5 +13,3 @@ defineProps<ITheBaseButton>();
     {{ text }}
   </button>
 </template>
-
-<style scoped></style>

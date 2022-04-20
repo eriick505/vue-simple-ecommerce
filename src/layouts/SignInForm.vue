@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { useAuthStore } from "@/stores/auth";
+import { useStore } from "@/stores";
 
 import BaseInputText from "@/components/BaseInputText.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -10,7 +10,7 @@ import IconPadlock from "@/components/icons/IconPadlock.vue";
 
 import type { AuthLoginRequest } from "@/types";
 
-const authStore = useAuthStore();
+const store = useStore();
 
 const login = ref<AuthLoginRequest>({
   email: "",
@@ -18,11 +18,11 @@ const login = ref<AuthLoginRequest>({
 });
 
 const textButtonSubmit = computed(() =>
-  authStore.loading ? "LOADING..." : "SIGN IN"
+  store.state.auth.loading ? "LOADING..." : "SIGN IN"
 );
 
 const handleSubmit = async () => {
-  await authStore.authLogin(login.value);
+  await store.dispatch("authLogin", login.value);
 };
 </script>
 
@@ -52,7 +52,7 @@ const handleSubmit = async () => {
       <BaseButton :text="textButtonSubmit" />
     </div>
 
-    <p class="text-red-600 text-xl mt-4">{{ authStore.error }}</p>
+    <p class="text-red-600 text-xl mt-4">{{ store.state.auth.error }}</p>
   </form>
 </template>
 

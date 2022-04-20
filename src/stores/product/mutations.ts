@@ -1,10 +1,10 @@
-import type { MutationTree } from "vuex";
-import type { RootState } from "@/stores/types";
-
 import {
   ProductMutationTypes as MutationTypes,
   type Mutations,
 } from "./mutation-types";
+
+import type { MutationTree } from "vuex";
+import type { RootState } from "@/stores/types";
 
 export const mutations: MutationTree<RootState["product"]> & Mutations = {
   [MutationTypes.LOADING_GETPRODUCT]: (state, loading) => {
@@ -36,7 +36,7 @@ export const mutations: MutationTree<RootState["product"]> & Mutations = {
   },
 
   [MutationTypes.LOADING_PRODUCTCREATE]: (state, loading) => {
-    state.isLoading.getProductList = loading;
+    state.isLoading.postProductCreate = loading;
   },
 
   [MutationTypes.CATEGORY_LIST]: (state, list) => {

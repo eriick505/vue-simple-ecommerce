@@ -15,7 +15,6 @@ export interface Actions {
   toggleProductToWishList(args: AugmentedActionContext, payload: string): void;
   addProductToWishList(args: AugmentedActionContext, payload: string): void;
   removeProductToWishList(args: AugmentedActionContext, payload: string): void;
-  // isProductIsOnTheWishList(args: AugmentedActionContext, payload: string): void;
   getCategoryList(args: AugmentedActionContext): Promise<void>;
   postProductCreate(
     args: AugmentedActionContext,

@@ -3,7 +3,6 @@ import {
   DELETE_PRODUCT,
   GET_PRODUCT_LIST,
 } from "@/services/product";
-
 import { verifyHttpError } from "@/services";
 import { GET_CATEGORY_LIST } from "@/services/category";
 
@@ -70,15 +69,6 @@ export const actions: ActionTree<RootState["product"], RootState> & Actions = {
 
     window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(state.wishList));
   },
-
-  // isProductIsOnTheWishList({ state }, productId: string) {
-  //   const productFound = state.wishList.find(
-  //     (productDesiredId) => productDesiredId === productId
-  //   );
-
-  //   if (productFound) return true;
-  //   else return false;
-  // },
 
   async getCategoryList({ commit }) {
     try {

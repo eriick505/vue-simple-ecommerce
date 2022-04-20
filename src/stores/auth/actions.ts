@@ -5,14 +5,9 @@ import { AUTH_LOGIN, AUTH_REGISTER, AUTH_USER_INFO } from "@/services/auth";
 
 import { TOKEN_KEY } from "@/utils/localStorage";
 
-import {
-  AUTHENTICATED_MUTATION,
-  ERROR_MUTATION,
-  LOADING_MUTATION,
-  RESET_MUTATION,
-  USER_MUTATION,
-} from "./mutation-types";
+import { AuthMutationTypes } from "./mutation-types";
 
+import type { Actions } from "./action-types";
 import type { ActionTree } from "vuex";
 import type { RootState } from "@/stores/types";
 import type {
@@ -21,10 +16,10 @@ import type {
   AuthRegisterRequest,
 } from "@/types";
 
-export const actions: ActionTree<RootState["auth"], RootState> = {
+export const actions: ActionTree<RootState["auth"], RootState> & Actions = {
   async authLogin({ dispatch, commit, state }, body: AuthLoginRequest) {
     try {
-      commit(LOADING_MUTATION, true);
+      commit(AuthMutationTypes.LOADING, true);
 
       const { data, status } = await AUTH_LOGIN(body);
 
@@ -44,28 +39,28 @@ export const actions: ActionTree<RootState["auth"], RootState> = {
         const errorData = result.response?.data as HttpErrorResponse;
         const errorMessage = (error as Error).message;
 
-        if (!errorData) return commit(ERROR_MUTATION, errorMessage);
+        if (!errorData) return commit(AuthMutationTypes.ERROR, errorMessage);
 
-        return commit(ERROR_MUTATION, errorData.error);
+        return commit(AuthMutationTypes.ERROR, errorData.error);
       }
 
-      commit(ERROR_MUTATION, result.message);
+      commit(AuthMutationTypes.ERROR, result.message);
     } finally {
-      commit(LOADING_MUTATION, false);
+      commit(AuthMutationTypes.LOADING, false);
     }
   },
 
-  async authGetUserInfo({ commit }): Promise<boolean> {
+  async authGetUserInfo({ commit }) {
     try {
-      commit(ERROR_MUTATION, "");
-      commit(LOADING_MUTATION, true);
+      commit(AuthMutationTypes.ERROR, "");
+      commit(AuthMutationTypes.LOADING, true);
 
       const { data, status } = await AUTH_USER_INFO();
 
       if (status !== 200) throw new Error("Fail to authenticate");
 
-      commit(USER_MUTATION, data.user);
-      commit(AUTHENTICATED_MUTATION, true);
+      commit(AuthMutationTypes.USER, data.user);
+      commit(AuthMutationTypes.AUTHENTICATED, true);
 
       return true;
     } catch (error) {
@@ -77,18 +72,18 @@ export const actions: ActionTree<RootState["auth"], RootState> = {
         const errorData = result.response?.data as HttpErrorResponse;
 
         if (!errorData) {
-          commit(ERROR_MUTATION, (error as Error).message);
+          commit(AuthMutationTypes.ERROR, (error as Error).message);
           return false;
         }
 
-        commit(ERROR_MUTATION, errorData.error);
+        commit(AuthMutationTypes.ERROR, errorData.error);
         return false;
       }
 
-      commit(ERROR_MUTATION, result.message);
+      commit(AuthMutationTypes.ERROR, result.message);
       return false;
     } finally {
-      commit(LOADING_MUTATION, false);
+      commit(AuthMutationTypes.LOADING, false);
     }
   },
 
@@ -100,8 +95,8 @@ export const actions: ActionTree<RootState["auth"], RootState> = {
 
       return Promise.resolve();
     } catch (err) {
-      commit(AUTHENTICATED_MUTATION, false);
-      commit(ERROR_MUTATION, (err as Error).message);
+      commit(AuthMutationTypes.AUTHENTICATED, false);
+      commit(AuthMutationTypes.ERROR, (err as Error).message);
     }
   },
 
@@ -110,8 +105,8 @@ export const actions: ActionTree<RootState["auth"], RootState> = {
     body: AuthRegisterRequest
   ) {
     try {
-      commit(ERROR_MUTATION, "");
-      commit(LOADING_MUTATION, true);
+      commit(AuthMutationTypes.ERROR, "");
+      commit(AuthMutationTypes.LOADING, true);
 
       const { data, status } = await AUTH_REGISTER(body);
 
@@ -130,19 +125,20 @@ export const actions: ActionTree<RootState["auth"], RootState> = {
       if (isHttpError) {
         const errorData = result.response?.data as HttpErrorResponse;
 
-        if (!errorData) return commit(ERROR_MUTATION, (error as Error).message);
+        if (!errorData)
+          return commit(AuthMutationTypes.ERROR, (error as Error).message);
 
-        return commit(ERROR_MUTATION, errorData.error);
+        return commit(AuthMutationTypes.ERROR, errorData.error);
       }
 
-      commit(ERROR_MUTATION, result.message);
+      commit(AuthMutationTypes.ERROR, result.message);
     } finally {
-      commit(LOADING_MUTATION, false);
+      commit(AuthMutationTypes.LOADING, false);
     }
   },
 
   logout({ commit }) {
-    commit(RESET_MUTATION);
+    commit(AuthMutationTypes.RESET, undefined);
 
     router.push("/login");
 

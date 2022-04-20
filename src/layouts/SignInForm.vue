@@ -2,7 +2,6 @@
 import { computed, ref } from "vue";
 
 import { useStore } from "@/stores";
-import { AUTH_LOGIN_ACTION } from "@/stores/auth";
 
 import BaseInputText from "@/components/BaseInputText.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -23,7 +22,7 @@ const textButtonSubmit = computed(() =>
 );
 
 const handleSubmit = async () => {
-  await store.dispatch(AUTH_LOGIN_ACTION, login.value);
+  await store.dispatch("authLogin", login.value);
 };
 </script>
 

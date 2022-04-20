@@ -1,33 +1,29 @@
 import {
-  AUTHENTICATED_MUTATION,
-  ERROR_MUTATION,
-  LOADING_MUTATION,
-  RESET_MUTATION,
-  USER_MUTATION,
+  AuthMutationTypes as MutationTypes,
+  type Mutations,
 } from "./mutation-types";
 
 import type { MutationTree } from "vuex";
 import type { RootState } from "@/stores/types";
-import type { AuthUser } from "@/types";
 
-export const mutations: MutationTree<RootState["auth"]> = {
-  [LOADING_MUTATION]: (state, loading: boolean) => {
+export const mutations: MutationTree<RootState["auth"]> & Mutations = {
+  [MutationTypes.LOADING]: (state, loading) => {
     state.loading = loading;
   },
 
-  [ERROR_MUTATION]: (state, message: string) => {
+  [MutationTypes.ERROR]: (state, message) => {
     state.error = message;
   },
 
-  [AUTHENTICATED_MUTATION]: (state, authtenticated: boolean) => {
+  [MutationTypes.AUTHENTICATED]: (state, authtenticated) => {
     state.authenticated = authtenticated;
   },
 
-  [USER_MUTATION]: (state, user: AuthUser) => {
+  [MutationTypes.USER]: (state, user) => {
     state.user = user;
   },
 
-  [RESET_MUTATION]: (state) => {
+  [MutationTypes.RESET]: (state) => {
     state.user = undefined;
     state.authenticated = false;
   },

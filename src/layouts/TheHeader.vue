@@ -2,19 +2,16 @@
 import { RouterLink } from "vue-router";
 
 import { useStore } from "@/stores";
-import { AUTH_LOGOUT_ACTION } from "@/stores/auth";
-import { useProductStore } from "@/stores/products";
 
 import IconUserCircle from "@/components/icons/IconUserCircle.vue";
 import IconHeart from "@/components/icons/IconHeart.vue";
 import IconCart from "@/components/icons/IconCart.vue";
 
 const store = useStore();
-const productStore = useProductStore();
 
-const getterWishListQuantity = () => productStore.getterWishListQuantity;
+const getterWishListQuantity = () => store.getters.getterWishListQuantity;
 
-const logout = () => store.dispatch(AUTH_LOGOUT_ACTION);
+const logout = () => store.dispatch("logout", undefined);
 </script>
 
 <template>
